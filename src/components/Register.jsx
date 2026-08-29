@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { registerUser } from '../api/ApiRequests'
+import { getAgencies, registerUser } from '../api/ApiRequests'
 import '../styles/Register.css'
 
 const USER_TYPE_MAP = {
-  END_USER: 1,
-  AGENCY: 2,
-  ADMIN: 3,
+  END_USER: "1",
+  AGENCY: "2",
+  ADMIN: "3",
 }
 
 const Register = () => {
@@ -15,13 +15,21 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    agency: '',
-    user_type: 'END_USER',
+    agency: null,
+    user_type: USER_TYPE_MAP.END_USER,
   })
+  const [agencies, setAgencies] = useState([])
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  useEffect(()=>{
+    getAgencies().then((response)=>{
+      setAgencies(response.data)
+    })
+  }, [])
+
+  console.log(data.user_type=== USER_TYPE_MAP.AGENCY);
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setData((currentData) => ({
@@ -54,7 +62,7 @@ const Register = () => {
       return
     }
 
-    if (data.user_type === 'AGENCY' && !data.agency.trim()) {
+    if (data.user_type === USER_TYPE_MAP.AGENCY && !data.agency.trim()) {
       setError('Ingresá el nombre de la agencia')
       return
     }
@@ -67,7 +75,7 @@ const Register = () => {
         user_type: USER_TYPE_MAP[data.user_type] ?? 1,
         name: data.name.trim(),
         password: data.password,
-        ...(data.user_type === 'AGENCY' ? { agency: data.agency.trim() } : {}),
+        ...(data.user_type === USER_TYPE_MAP.AGENCY ? { agency: data.agency.trim() } : {}),
       }
 
       await registerUser(payload)
@@ -163,23 +171,24 @@ const Register = () => {
             value={data.user_type}
             onChange={handleInputChange}
           >
-            <option value="END_USER">Comprador</option>
-            <option value="ADMIN">Administrador</option>
-            <option value="AGENCY">Agencia</option>
+            <option value={USER_TYPE_MAP.END_USER}>Comprador</option>
+            <option value={USER_TYPE_MAP.ADMIN}>Administrador</option>
+            <option value={USER_TYPE_MAP.AGENCY}>Agencia</option>
           </select>
 
-          {data.user_type === 'AGENCY' && (
+          {data.user_type === USER_TYPE_MAP.AGENCY && (
             <>
-              <label htmlFor="RegisterAgencyInput">Nombre de la agencia</label>
-              <input
-                id="RegisterAgencyInput"
-                name="agency"
-                className="registerInput"
-                type="text"
-                placeholder="Ingresá el nombre de la agencia"
-                value={data.agency}
-                onChange={handleInputChange}
-              />
+              <label htmlFor="RegisterAgencySelect">Selecciona una agencia</label>
+              <select
+            id="RegisterAgency"
+            name="agency"
+            className="registerInput register-select"
+            value={data.agency}
+            onChange={handleInputChange}
+          >
+            {agencies.map(agency => (<option value={agency.id}>{agency.name}</option>))}
+          </select>
+
             </>
           )}
 
