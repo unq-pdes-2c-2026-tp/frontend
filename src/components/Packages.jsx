@@ -22,15 +22,73 @@ const Packages = () => {
   return (
     <main className="packages-page">
       <header className="topbar">
-        <a className="brand" href="/packages" aria-label="Compra tu Viaje, inicio"><span className="brand-mark">CTV</span><span>Compra tu Viaje</span></a>
-        <nav aria-label="Navegación principal"><a className="nav-link active" href="/packages">Paquetes</a><a className="nav-link" href="/agencias">Agencias</a></nav>
+        <a className="brand" href="/packages" aria-label="Comprá tu Viaje, inicio">
+          <span className="brand-mark">CTV</span>
+          <span>Comprá tu Viaje</span>
+        </a>
+        <nav aria-label="Navegación principal">
+          <a className="nav-link active" href="/packages">Paquetes</a><a className="nav-link" href="/agencias">Agencias</a>
+        </nav>
         <button className="profile-button" type="button" aria-label="Abrir perfil">FM</button>
       </header>
-      <section className="page-heading"><div><p className="eyebrow">Catálogo de viajes</p><h1>Paquetes</h1><p className="heading-copy">Explorá propuestas de nuestras agencias asociadas.</p></div><div className="heading-stat"><strong>{packages.length}</strong><span>paquetes disponibles</span></div></section>
-      <section className="toolbar" aria-label="Filtros de paquetes"><label className="search-field"><span aria-hidden="true">⌕</span><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar paquete, hotel o agencia" /></label><label className="select-field"><span>Agencia</span><select value={agency} onChange={(event) => setAgency(event.target.value)}>{agencies.map((item) => <option key={item}>{item}</option>)}</select></label></section>
-      <section className="package-list" aria-live="polite"><div className="list-header"><span>{filteredPackages.length} resultados</span><span>Ordenado por más recientes</span></div>
-        {filteredPackages.map((item) => <article className="package-row" key={item.id}><div className={`package-image ${item.accent}`} aria-hidden="true"><span>{item.hotel}</span></div><div className="package-info"><div className="package-title-line"><h2>{item.name}</h2></div><p className="agency"><span className="agency-dot">{item.agency.charAt(0)}</span>{item.agency}</p><p className="package-description">{item.description}</p><div className="package-meta"><span>Hotel: {item.hotel}</span><span>Ida: {item.outboundFlightId}</span><span>Vuelta: {item.returnFlightId}</span></div></div><div className="package-price"><span>Precio</span><strong>$ {item.price.toLocaleString('es-AR')}</strong><button type="button">Ver paquete <span aria-hidden="true">→</span></button></div></article>)}
-        {filteredPackages.length === 0 && <div className="empty-state"><strong>No encontramos paquetes</strong><span>Probá con otro destino o agencia.</span></div>}
+      <section className="page-heading">
+        <div>
+          <p className="eyebrow">Catálogo de viajes</p>
+          <h1>Paquetes</h1>
+          <p className="heading-copy">Explorá propuestas de nuestras agencias asociadas.</p>
+        </div>
+        <div className="heading-stat">
+          <strong>{packages.length}</strong>
+          <span>paquetes disponibles</span>
+        </div>
+      </section>
+      <section className="toolbar" aria-label="Filtros de paquetes">
+        <label className="search-field">
+          <span aria-hidden="true">⌕</span>
+          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar paquete, hotel o agencia" />
+        </label>
+        <label className="select-field">
+          <span>Agencia</span>
+          <select value={agency} onChange={(event) => setAgency(event.target.value)}>{agencies.map((item) => <option key={item}>{item}</option>)}</select>
+        </label>
+      </section>
+      <section className="package-list" aria-live="polite">
+        <div className="list-header">
+          <span>{filteredPackages.length} resultados</span>
+          <span>Ordenado por más recientes</span>
+        </div>
+        {filteredPackages.map((item) => 
+          <article className="package-row" key={item.id}>
+            <div className={`package-image ${item.accent}`} aria-hidden="true">
+              <span>{item.hotel}</span>
+            </div>
+            <div className="package-info">
+              <div className="package-title-line">
+                <h2>{item.name}</h2>
+              </div>
+              <p className="agency">
+                <span className="agency-dot">{item.agency.charAt(0)}</span>{item.agency}
+              </p>
+              <p className="package-description">{item.description}</p>
+              <div className="package-meta">
+                <span>Hotel: {item.hotel}</span>
+                <span>Ida: {item.outboundFlightId}</span>
+                <span>Vuelta: {item.returnFlightId}</span>
+              </div>
+            </div>
+            <div className="package-price">
+              <span>Precio</span>
+              <strong>$ {item.price.toLocaleString('es-AR')}</strong>
+              <button type="button">Ver paquete 
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </article>)}
+        {filteredPackages.length === 0 && 
+          <div className="empty-state">
+            <strong>No encontramos paquetes</strong>
+            <span>Probá con otro destino o agencia.</span>
+          </div>}
       </section>
     </main>
   )

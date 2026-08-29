@@ -4,9 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 //import PublicRoute from './routes/PublicRoute';
 //import PrivateRoute from './routes/PrivateRoute';
 import Packages from './components/Packages';
-
-// Placeholders temporales: reemplazar por los componentes reales cuando estén listos.
-const Login = () => <div>Login</div>;
+import Login from './components/Login';
+import Register from './components/Register';
 
 const App = () => {
     return (
@@ -20,6 +19,7 @@ const App = () => {
                 </Route>
                 */}
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/packages" element={<Packages />} />
             </Routes>
         </BrowserRouter>
