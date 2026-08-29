@@ -104,7 +104,7 @@ const Register = () => {
             {error}
           </div>
 
-          <label htmlFor="RegisterNameInput">Nombre de usuario</label>
+          <label htmlFor="RegisterNameInput">Nombre</label>
           <input
             data-testid="register-name"
             id="RegisterNameInput"
