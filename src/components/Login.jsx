@@ -5,7 +5,7 @@ import '../styles/Login.css'
 
 const Login = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState({ username: '', password: '' })
+  const [data, setData] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -24,9 +24,10 @@ const Login = () => {
 
     try {
       const response = await login(data)
+      console.log(response.headers);
       localStorage.setItem('token', response.headers.authentication)
       localStorage.setItem('userId', response.data.id)
-      localStorage.setItem('user', response.data.username)
+      localStorage.setItem('user', response.data.email)
       navigate('/home')
     } catch (requestError) {
       const message = requestError.response?.data || 'Falló la conexión con el servidor'
@@ -58,8 +59,8 @@ const Login = () => {
             <h2>Iniciar sesión</h2>
             <p>Completá tus datos para continuar.</p>
           </div>
-          <label htmlFor="login-username">E-mail</label>
-          <input id="login-username" name="username" type="text" placeholder="Ingresá tu email" value={data.username} onChange={handleInputChange} required autoComplete="username" />
+          <label htmlFor="login-email">E-mail</label>
+          <input id="login-email" name="email" type="text" placeholder="Ingresá tu email" value={data.email} onChange={handleInputChange} required autoComplete="email" />
           <label htmlFor="login-password">Contraseña</label>
           <input id="login-password" name="password" type="password" placeholder="Ingresá tu contraseña" value={data.password} onChange={handleInputChange} required autoComplete="current-password" />
           {error && <div className="login-error" role="alert">{error}</div>}
