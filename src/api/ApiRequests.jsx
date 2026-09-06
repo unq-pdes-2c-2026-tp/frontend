@@ -10,7 +10,7 @@ const apiClient = axios.create({
 export const getStoredAuthToken = () => {
   if (typeof window === "undefined") return "";
   const token = localStorage.getItem("token") || "";
-  return token.replace(/^Token\s+/i, "");
+  return token;
 };
 
 export const getAuthHeaders = () => {
