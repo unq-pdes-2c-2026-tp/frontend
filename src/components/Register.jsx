@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { getAgencies, registerUser } from '../api/ApiRequests'
+import { USER_TYPE_MAP } from '../constants'
 import '../styles/Register.css'
-
-const USER_TYPE_MAP = {
-  END_USER: "1",
-  AGENCY: "2",
-  ADMIN: "3",
-}
 
 const Register = () => {
   const navigate = useNavigate()
@@ -29,7 +24,6 @@ const Register = () => {
     })
   }, [])
 
-  console.log(data.user_type=== USER_TYPE_MAP.AGENCY);
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setData((currentData) => ({

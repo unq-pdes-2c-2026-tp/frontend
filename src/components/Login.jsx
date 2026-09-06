@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { login } from "../api/ApiRequests";
+import { useNavigateByUserType } from "../routes/useNavigateByUserType"
 import "../styles/Login.css";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigateByUserType = useNavigateByUserType();
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,15 +24,7 @@ const Login = () => {
 
     try {
       const response = await login(data);
-      const authTokenHeader =
-        response.headers?.authorization ||
-        response.headers?.Authorization ||
-        response.headers?.["Authorization"] ||
-        response.headers?.authentication ||
-        response.headers?.Authentication ||
-        response.headers?.["Authentication"] ||
-        "";
-      const authToken = authTokenHeader.replace(/^Token\s+/i, "");
+      const authToken = response.headers?.authorization;
 
       localStorage.setItem("token", authToken);
       localStorage.setItem("userId", String(response.data.id));
@@ -40,7 +32,7 @@ const Login = () => {
       localStorage.setItem("userName", response.data.name || "");
       localStorage.setItem("userType", response.data.user_type || "");
       localStorage.setItem("user", JSON.stringify(response.data));
-      navigate("/packages");
+      navigateByUserType(response.data.user_type);
     } catch (requestError) {
       const message =
         requestError.response?.data || "Falló la conexión con el servidor";
