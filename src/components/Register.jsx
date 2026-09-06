@@ -66,7 +66,7 @@ const Register = () => {
     try {
       const payload = {
         email: data.email.trim(),
-        user_type: USER_TYPE_MAP[data.user_type] ?? 1,
+        user_type: data.user_type,
         name: data.name.trim(),
         password: data.password,
         ...(data.user_type === USER_TYPE_MAP.AGENCY ? { agency: data.agency.trim() } : {}),
