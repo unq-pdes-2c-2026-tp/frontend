@@ -13,6 +13,12 @@ export const getStoredAuthToken = () => {
   return token;
 };
 
+export const getStoredUser = () => {
+  if (typeof window === "undefined") return "";
+  const token = localStorage.getItem("user") || "";
+  return token;
+};
+
 export const getAuthHeaders = () => {
   const token = getStoredAuthToken();
   return token ? { Authorization: `Token ${token}` } : {};
@@ -48,4 +54,5 @@ export default {
   getAgencies,
   uploadProfilePicture,
   deleteProfilePicture,
+  getStoredUser
 };
