@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { getStoredUser } from "../api/ApiRequests";
+import { getStoredUser } from "../store/local";
 
 
 export function PageHeader() {

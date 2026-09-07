@@ -9,9 +9,12 @@ import Profile from "./components/Profile";
 import Register from "./components/Register";
 import { Agencies } from "./components/admin/Agencies";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getStoredUser } from "./store/local";
 
 
 const App = () => {
+  const user = getStoredUser()
+  console.log(user);
   return (
     <BrowserRouter>
       <Routes>
@@ -27,7 +30,8 @@ const App = () => {
         <Route path="/packages" element={<Packages />} />
         <Route path="/admin-agencies" element={<Agencies />} />
         <Route path="/profile" element={<Profile />} />
-      </Routes>
+        <Route path="/" element={user? <Packages /> :<Login /> } />
+        </Routes>
     </BrowserRouter>
   );
 };

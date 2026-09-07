@@ -1,23 +1,12 @@
 import axios from "axios";
+import { getStoredAuthToken } from "../store/local";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
 });
-
-export const getStoredAuthToken = () => {
-  if (typeof window === "undefined") return "";
-  const token = localStorage.getItem("token") || "";
-  return token;
-};
-
-export const getStoredUser = () => {
-  if (typeof window === "undefined") return "";
-  const token = localStorage.getItem("user") || "";
-  return token;
-};
 
 export const getAuthHeaders = () => {
   const token = getStoredAuthToken();
@@ -30,10 +19,6 @@ export const login = (data) => {
 
 export const registerUser = (data) => {
   return apiClient.post("/users/", data);
-};
-
-export const getAgencies = () => {
-  return apiClient.get("/agencies/");
 };
 
 export const uploadProfilePicture = (formData) => {
@@ -51,8 +36,6 @@ export const deleteProfilePicture = () => {
 export default {
   login,
   registerUser,
-  getAgencies,
   uploadProfilePicture,
   deleteProfilePicture,
-  getStoredUser
 };

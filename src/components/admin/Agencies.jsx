@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { getAgencies } from '../../api/ApiRequests';
 import { Page } from '../Page';
+import { getAgencies } from '../../api/agencies';
 
 function Agency({agency}) {
   return (
