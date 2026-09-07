@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { registerUser } from '../api/ApiRequests'
 import { USER_TYPE_MAP } from '../constants'
 import '../styles/Register.css'
 import { getAgencies } from '../api/agencies'
+import { registerUser } from '../api/auth'
 
 const Register = () => {
   const navigate = useNavigate()

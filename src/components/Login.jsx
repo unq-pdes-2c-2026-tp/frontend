@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { login } from "../api/ApiRequests";
 import { useNavigateByUserType } from "../routes/useNavigateByUserType"
 import "../styles/Login.css";
+import { login } from "../api/auth";
 
 const Login = () => {
   const navigateByUserType = useNavigateByUserType();

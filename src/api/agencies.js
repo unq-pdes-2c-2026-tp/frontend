@@ -1,4 +1,4 @@
-import { apiClient } from "./ApiRequests";
+import { apiAuthenticatedClient, apiClient } from "./ApiRequests";
 
 
 const AGENCIES_URL = "/agencies/"
@@ -8,5 +8,5 @@ export const getAgencies = () => {
 };
 
 export const deleteAgency = (agencyId) => {
-  return apiClient.delete(`${AGENCIES_URL}${agencyId}/`);
+  return apiAuthenticatedClient.delete(`${AGENCIES_URL}${agencyId}/`);
 };
