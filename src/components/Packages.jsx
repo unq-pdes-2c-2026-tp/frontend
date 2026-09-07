@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import "../styles/packages.css";
 import { Page } from "./Page";
+import { asMoney } from "../format-utils/money";
 
 const packages = [
   {
@@ -147,7 +148,7 @@ const Packages = () => {
             </div>
             <div className="package-price">
               <span>Precio</span>
-              <strong>$ {item.price.toLocaleString("es-AR")}</strong>
+              <strong>{asMoney(item.price)}</strong>
               <button type="button">
                 Ver paquete
                 <span aria-hidden="true">→</span>
