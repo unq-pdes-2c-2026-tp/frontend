@@ -14,7 +14,6 @@ import { getStoredUser } from "./store/local";
 
 const App = () => {
   const user = getStoredUser()
-  console.log(user);
   return (
     <BrowserRouter>
       <Routes>
