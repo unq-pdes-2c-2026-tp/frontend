@@ -15,7 +15,7 @@ function CTVModal({heading, body, okLabel, okAction, handleClose, show}) {
     okAction();
     handleClose();
   }
-  console.log(show);
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>

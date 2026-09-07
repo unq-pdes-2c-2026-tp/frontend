@@ -10,11 +10,15 @@ import Register from "./components/Register";
 import { Agencies } from "./components/admin/Agencies";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getStoredUser } from "./store/local";
+import { SnackbarProvider } from "notistack";
 
 
 const App = () => {
   const user = getStoredUser()
   return (
+    <SnackbarProvider
+    autoHideDuration={5000}
+>
     <BrowserRouter>
       <Routes>
         {/* Ejemplo de routing, los privados en caso de no estar autenticado te redirigen al login. */}
@@ -32,6 +36,7 @@ const App = () => {
         <Route path="/" element={user? <Packages /> :<Login /> } />
         </Routes>
     </BrowserRouter>
+    </SnackbarProvider>
   );
 };
 
