@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
 import "../styles/packages.css";
+import { Page } from "./Page";
+import { asMoney } from "../format-utils/money";
 
 const packages = [
   {
@@ -66,7 +67,6 @@ const packages = [
 ];
 
 const Packages = () => {
-  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [agency, setAgency] = useState("Todas las agencias");
   const agencies = [
@@ -85,46 +85,8 @@ const Packages = () => {
     [agency, search],
   );
 
-  const storedUser =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("user") || "{}")
-      : {};
-  const profileInitials =
-    (storedUser.name || storedUser.email || "Usuario")
-      .split(" ")
-      .filter(Boolean)
-      .map((part) => part[0].toUpperCase())
-      .slice(0, 2)
-      .join("") || "U";
-
   return (
-    <main className="packages-page">
-      <header className="topbar">
-        <a
-          className="brand"
-          href="/packages"
-          aria-label="Comprá tu Viaje, inicio"
-        >
-          <span className="brand-mark">CTV</span>
-          <span>Comprá tu Viaje</span>
-        </a>
-        <nav aria-label="Navegación principal">
-          <a className="nav-link active" href="/packages">
-            Paquetes
-          </a>
-          <a className="nav-link" href="/agencias">
-            Agencias
-          </a>
-        </nav>
-        <button
-          className="profile-button"
-          type="button"
-          aria-label="Abrir perfil"
-          onClick={() => navigate("/profile")}
-        >
-          {profileInitials}
-        </button>
-      </header>
+    <Page>
       <section className="page-heading">
         <div>
           <p className="eyebrow">Catálogo de viajes</p>
@@ -186,7 +148,7 @@ const Packages = () => {
             </div>
             <div className="package-price">
               <span>Precio</span>
-              <strong>$ {item.price.toLocaleString("es-AR")}</strong>
+              <strong>{asMoney(item.price)}</strong>
               <button type="button">
                 Ver paquete
                 <span aria-hidden="true">→</span>
@@ -201,7 +163,7 @@ const Packages = () => {
           </div>
         )}
       </section>
-    </main>
+      </Page>
   );
 };
 
