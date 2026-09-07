@@ -5,19 +5,21 @@ import { Page } from '../Page';
 import { getAgencies } from '../../api/agencies';
 import { useModal } from '../CTVModal';
 import { AgencyDeleteModal } from './AgencyDeleteModal';
+import { getCurrentMonth } from '../../format-utils/dates';
+import { asMoney } from '../../format-utils/money';
 
 function Agency({agency}) {
   const [handleClose, handleShow, show] = useModal()
+  const currentMonth = getCurrentMonth()
   return (
     <div key={`agency-card${agency.id}`}>
     <Card style={{ width: '18rem' }}>
       <Card.Body>
         <Card.Title>{agency.name}</Card.Title>
         <Card.Text>
-          
+          Recaudación de {currentMonth}: {asMoney(100000)}
         </Card.Text>
       <div style={{display: "flex", gap: 8}}>
-        <Button variant="primary">Ver perfil</Button>
         <Button variant="outline-danger" onClick={handleShow}>Dar de baja</Button>
       </div>
       </Card.Body>
