@@ -4,3 +4,5 @@ export const USER_TYPE_MAP = {
   AGENCY: "2",
   ADMIN: "3",
 }
+
+export const PERMISSION_DENIED_MESSAGE = "No tenés permisos para realizar esta acción"
