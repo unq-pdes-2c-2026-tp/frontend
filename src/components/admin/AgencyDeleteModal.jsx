@@ -3,11 +3,12 @@ import CTVModal from "../CTVModal";
 import { useMessages } from "../../hooks/useMessages";
 import { PERMISSION_DENIED_MESSAGE } from "../../constants";
 
-export function AgencyDeleteModal({agency, handleClose, show}){
+export function AgencyDeleteModal({agency, handleClose, show, onOk}){
   const {success, error} = useMessages();
 
   const deleteFunc = () => {
     deleteAgency(agency.id).then(()=>{
+      onOk();
       success(`Se borró la agencia ${agency.name}`)
     }).catch(err => {
       if (err.response.status === 403) {

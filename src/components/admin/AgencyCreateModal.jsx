@@ -5,12 +5,13 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { PERMISSION_DENIED_MESSAGE } from "../../constants";
 
-export function AgencyCreateModal({handleClose, show}){
+export function AgencyCreateModal({handleClose, show, onOk}){
   const {success, error} = useMessages();
   const [name, setName]= useState("")
 
   const createFunc = () => {
     createAgency({name}).then(()=>{
+      onOk();
       success(`Se creó la agencia ${name}`)
     }).catch(err => {
       if (err.response.status === 403) {

@@ -10,7 +10,7 @@ import { asMoney } from '../../format-utils/money';
 import FAB from '../fab';
 import { AgencyCreateModal } from './AgencyCreateModal';
 
-function Agency({agency}) {
+function Agency({agency, onDelete}) {
   const [handleClose, handleShow, show] = useModal()
   const currentMonth = getCurrentMonth()
   return (
@@ -26,32 +26,35 @@ function Agency({agency}) {
       </div>
       </Card.Body>
     </Card>
-    {show && <AgencyDeleteModal agency={agency} handleClose={handleClose} show={show} />}
+    {show && <AgencyDeleteModal agency={agency} handleClose={handleClose} show={show} onOk={onDelete} />}
     </div>
   );
 }
 
-function AgencyList({agencies}) {
-  return agencies.map(agency => (<Agency agency={agency} key={`agency-card${agency.id}`}/>))
+function AgencyList({agencies, ...rest}) {
+  return agencies.map(agency => (<Agency agency={agency} key={`agency-card${agency.id}`} {...rest}/>))
 }
 
 export function Agencies() {
   const [agencies, setAgencies] = useState([])
+  const [updateAgencies, setUpdateAgencies] = useState(false)
   const [handleClose, handleShow, show] = useModal()
 
+  const reloadAgencies = () => setUpdateAgencies(prev => !prev)
   useEffect(() => {
     getAgencies().then((response)=>{
+      console.log(response.data);
       setAgencies(response.data)
     })
-  }, [])
+  }, [updateAgencies])
 
   return (
     <Page>
       <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8}}>
-        <AgencyList agencies={agencies} />
+        <AgencyList agencies={agencies} onDelete={reloadAgencies} />
         <FAB onClick={handleShow}/>
       </div>
-      {show && <AgencyCreateModal handleClose={handleClose} show={show}/>}
+      {show && <AgencyCreateModal handleClose={handleClose} show={show} onOk={reloadAgencies}/>}
       </Page>
   )
 }
