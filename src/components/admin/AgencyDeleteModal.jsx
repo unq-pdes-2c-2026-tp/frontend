@@ -1,6 +1,7 @@
 import { deleteAgency } from "../../api/agencies";
 import CTVModal from "../CTVModal";
 import { useMessages } from "../../hooks/useMessages";
+import { PERMISSION_DENIED_MESSAGE } from "../../constants";
 
 export function AgencyDeleteModal({agency, handleClose, show}){
   const {success, error} = useMessages();
@@ -10,7 +11,7 @@ export function AgencyDeleteModal({agency, handleClose, show}){
       success(`Se borró la agencia ${agency.name}`)
     }).catch(err => {
       if (err.response.status === 403) {
-        error("No tenés permisos para realizar esta acción")
+        error(PERMISSION_DENIED_MESSAGE)
       }
       else{
         error("Ocurrió un error al borrar la agencia")
