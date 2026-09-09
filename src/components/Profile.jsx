@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { deleteProfilePicture, uploadProfilePicture } from "../api/ApiRequests";
 import "../styles/profile.css";
+import { Page } from "./Page";
 
 const getStoredUser = () => {
   try {
@@ -142,37 +143,7 @@ const Profile = () => {
   };
 
   return (
-    <main className="profile-page">
-      <header className="topbar profile-topbar">
-        <a
-          className="brand"
-          href="/packages"
-          aria-label="Comprá tu Viaje, inicio"
-        >
-          <span className="brand-mark">CTV</span>
-          <span>Comprá tu Viaje</span>
-        </a>
-        <nav aria-label="Navegación principal">
-          <a className="nav-link" href="/packages">
-            Paquetes
-          </a>
-          <a className="nav-link" href="/agencias">
-            Agencias
-          </a>
-          <a className="nav-link active" href="/profile">
-            Perfil
-          </a>
-        </nav>
-        <button
-          className="profile-button"
-          type="button"
-          aria-label="Perfil del usuario"
-          onClick={() => navigate("/profile")}
-        >
-          {initials}
-        </button>
-      </header>
-
+    <Page>
       <section className="profile-shell">
         <div className="profile-card">
           <div className="profile-header">
@@ -253,7 +224,7 @@ const Profile = () => {
           </div>
         </div>
       </section>
-    </main>
+    </Page>
   );
 };
 
