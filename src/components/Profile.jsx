@@ -3,14 +3,7 @@ import { useNavigate } from "react-router";
 import { deleteProfilePicture, uploadProfilePicture } from "../api/ApiRequests";
 import "../styles/profile.css";
 import { Page } from "./Page";
-
-const getStoredUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem("user") || "{}");
-  } catch {
-    return {};
-  }
-};
+import { getStoredUser } from "../store/local";
 
 const getUserTypeLabel = (userType) => {
   const normalizedType = String(userType ?? "").trim();

@@ -1,5 +1,5 @@
 import "./styles/index.css";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 // Se conservan para activar los guards cuando se implemente autenticación.
 //import PublicRoute from './routes/PublicRoute';
 //import PrivateRoute from './routes/PrivateRoute';
@@ -11,6 +11,7 @@ import { Agencies } from "./components/admin/Agencies";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
+import { ROUTES } from "./routes/constants";
 
 
 const App = () => {
@@ -28,12 +29,12 @@ const App = () => {
                     <Route path="/packages" element={<Packages />} />
                 </Route>
                 */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/packages" element={<Packages />} />
-        <Route path="/admin-agencies" element={<Agencies />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/" element={user? <Packages /> :<Login /> } />
+        <Route path={ROUTES.LOGIN} element={<Login />} />
+        <Route path={ROUTES.REGISTER} element={<Register />} />
+        <Route path={ROUTES.PACKAGES} element={<Packages />} />
+        <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
+        <Route path={ROUTES.PROFILE} element={<Profile />} />
+        <Route path="/" element={user? <Navigate to={ROUTES.PACKAGES} /> :<Navigate to={ROUTES.LOGIN} /> } />
         </Routes>
     </BrowserRouter>
     </SnackbarProvider>

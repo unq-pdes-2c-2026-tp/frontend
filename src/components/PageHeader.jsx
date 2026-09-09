@@ -1,6 +1,47 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { getStoredUser } from "../store/local";
+import { USER_TYPE_MAP } from "../constants";
+import { ROUTES } from "../routes/constants";
 
+
+function getLinks() {
+  const user = getStoredUser()
+  console.log(user);
+  if (!user)
+    return []
+
+  const commonLinks = [
+    {
+      label: "Perfil",
+      path: ROUTES.PROFILE
+    }
+  ]
+
+  if (user.user_type.toString() === USER_TYPE_MAP.END_USER) {
+    return [
+      {
+        label: "Paquetes",
+        path: ROUTES.PACKAGES
+      },
+      {
+        label: "Agencias",
+        path: ROUTES.AGENCIES
+      },
+      ...commonLinks
+    ]
+  }
+
+  if (user.user_type.toString() === USER_TYPE_MAP.ADMIN) {
+    return [
+      {
+        label: "Agencias",
+        path: ROUTES.ADMIN_AGENCIES
+      },
+      ...commonLinks
+    ]
+  }
+  return []
+}
 
 export function PageHeader() {
   const navigate = useNavigate();
@@ -16,19 +57,14 @@ export function PageHeader() {
   <header className="topbar">
         <a
           className="brand"
-          href="/packages"
+          href="/"
           aria-label="Comprá tu Viaje, inicio"
         >
           <span className="brand-mark">CTV</span>
           <span>Comprá tu Viaje</span>
         </a>
         <nav aria-label="Navegación principal">
-          <a className="nav-link active" href="/packages">
-            Paquetes
-          </a>
-          <a className="nav-link" href="/agencias">
-            Agencias
-          </a>
+          {getLinks().map(link  => <Link key={link.path} label={link.label} path={link.path} />)}
         </nav>
         <button
           className="profile-button"
@@ -40,4 +76,15 @@ export function PageHeader() {
         </button>
       </header>
   );
+}
+
+function Link({label, path}) {
+  const location = useLocation()
+  const active = location.pathname === path
+  const className = active ? "nav-link active" : "nav-link"
+  return (
+    <a className={className} href={path}>
+            {label}
+          </a>
+  )
 }

@@ -7,6 +7,9 @@ export const getStoredAuthToken = () => {
 
 export const getStoredUser = () => {
   if (typeof window === "undefined") return "";
-  const token = localStorage.getItem("user") || "";
-  return token;
+  const user = localStorage.getItem("user");
+  if (!user)
+    return null
+
+  return JSON.parse(user);
 };
