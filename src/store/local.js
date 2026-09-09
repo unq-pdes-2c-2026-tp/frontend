@@ -13,3 +13,14 @@ export const getStoredUser = () => {
 
   return JSON.parse(user);
 };
+
+
+export function logout() {
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userType");
+  localStorage.removeItem("user");
+}

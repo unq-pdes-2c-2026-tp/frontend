@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
 import { deleteProfilePicture, uploadProfilePicture } from "../api/ApiRequests";
 import "../styles/profile.css";
 import { Page } from "./Page";
@@ -33,7 +32,6 @@ const buildDefaultAvatar = () => {
 };
 
 const Profile = () => {
-  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [user, setUser] = useState(() => getStoredUser());
   const [selectedImage, setSelectedImage] = useState("");
@@ -43,13 +41,6 @@ const Profile = () => {
 
   const profileImage =
     selectedImage || user?.profile_picture || buildDefaultAvatar();
-  const initials =
-    (user?.name || user?.email || "Usuario")
-      .split(" ")
-      .filter(Boolean)
-      .map((part) => part[0].toUpperCase())
-      .slice(0, 2)
-      .join("") || "U";
   const userTypeLabel = getUserTypeLabel(user?.user_type);
 
   const handleUpload = async (event) => {

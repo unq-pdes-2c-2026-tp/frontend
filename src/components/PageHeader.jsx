@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router";
-import { getStoredUser } from "../store/local";
+import { getStoredUser, logout } from "../store/local";
 import { USER_TYPE_MAP } from "../constants";
 import { ROUTES } from "../routes/constants";
+import { Button } from "react-bootstrap";
 
 
 function getLinks() {
@@ -47,12 +48,19 @@ export function PageHeader() {
   const navigate = useNavigate();
   const storedUser = getStoredUser()
   const profileInitials =
-  (storedUser.name || storedUser.email || "Usuario")
+  (storedUser?.name || storedUser?.email || "Usuario")
     .split(" ")
     .filter(Boolean)
     .map((part) => part[0].toUpperCase())
     .slice(0, 2)
     .join("") || "U";
+
+  const doLogout = ()=>{
+    logout()
+    navigate("/", {replace: true})
+  }
+
+
   return (
   <header className="topbar">
         <a
@@ -70,10 +78,11 @@ export function PageHeader() {
           className="profile-button"
           type="button"
           aria-label="Abrir perfil"
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate(ROUTES.PROFILE)}
         >
           {profileInitials}
         </button>
+        <Button variant="outline-danger" size="sm" onClick={doLogout} >Cerrar sesión</Button>
       </header>
   );
 }
@@ -84,7 +93,7 @@ function Link({label, path}) {
   const className = active ? "nav-link active" : "nav-link"
   return (
     <a className={className} href={path}>
-            {label}
-          </a>
+      {label}
+    </a>
   )
 }
