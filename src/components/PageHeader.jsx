@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from "react-router";
-import { getStoredUser, logout } from "../store/local";
+import { getStoredUser, storeLogout } from "../store/local";
 import { USER_TYPE_MAP } from "../constants";
 import { ROUTES } from "../routes/constants";
 import { Button } from "react-bootstrap";
+import { logout } from "../api/auth";
 
 
 function getLinks() {
@@ -56,8 +57,10 @@ export function PageHeader() {
     .join("") || "U";
 
   const doLogout = ()=>{
-    logout()
-    navigate("/", {replace: true})
+    logout().then(()=>{
+      storeLogout()
+      navigate("/", {replace: true})
+    })
   }
 
 

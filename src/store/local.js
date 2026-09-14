@@ -15,8 +15,7 @@ export const getStoredUser = () => {
 };
 
 
-export function logout() {
-
+export function storeLogout() {
   localStorage.removeItem("token");
   localStorage.removeItem("userId");
   localStorage.removeItem("userEmail");
