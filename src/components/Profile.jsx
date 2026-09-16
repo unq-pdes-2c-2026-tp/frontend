@@ -1,15 +1,8 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
 import { deleteProfilePicture, uploadProfilePicture } from "../api/ApiRequests";
 import "../styles/profile.css";
-
-const getStoredUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem("user") || "{}");
-  } catch {
-    return {};
-  }
-};
+import { Page } from "./Page";
+import { getStoredUser } from "../store/local";
 
 const getUserTypeLabel = (userType) => {
   const normalizedType = String(userType ?? "").trim();
@@ -39,7 +32,6 @@ const buildDefaultAvatar = () => {
 };
 
 const Profile = () => {
-  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [user, setUser] = useState(() => getStoredUser());
   const [selectedImage, setSelectedImage] = useState("");
@@ -49,13 +41,6 @@ const Profile = () => {
 
   const profileImage =
     selectedImage || user?.profile_picture || buildDefaultAvatar();
-  const initials =
-    (user?.name || user?.email || "Usuario")
-      .split(" ")
-      .filter(Boolean)
-      .map((part) => part[0].toUpperCase())
-      .slice(0, 2)
-      .join("") || "U";
   const userTypeLabel = getUserTypeLabel(user?.user_type);
 
   const handleUpload = async (event) => {
@@ -142,37 +127,7 @@ const Profile = () => {
   };
 
   return (
-    <main className="profile-page">
-      <header className="topbar profile-topbar">
-        <a
-          className="brand"
-          href="/packages"
-          aria-label="Comprá tu Viaje, inicio"
-        >
-          <span className="brand-mark">CTV</span>
-          <span>Comprá tu Viaje</span>
-        </a>
-        <nav aria-label="Navegación principal">
-          <a className="nav-link" href="/packages">
-            Paquetes
-          </a>
-          <a className="nav-link" href="/agencias">
-            Agencias
-          </a>
-          <a className="nav-link active" href="/profile">
-            Perfil
-          </a>
-        </nav>
-        <button
-          className="profile-button"
-          type="button"
-          aria-label="Perfil del usuario"
-          onClick={() => navigate("/profile")}
-        >
-          {initials}
-        </button>
-      </header>
-
+    <Page>
       <section className="profile-shell">
         <div className="profile-card">
           <div className="profile-header">
@@ -253,7 +208,7 @@ const Profile = () => {
           </div>
         </div>
       </section>
-    </main>
+    </Page>
   );
 };
 
