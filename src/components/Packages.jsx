@@ -4,6 +4,16 @@ import { Page } from "./Page";
 import { asMoney } from "../format-utils/money";
 import { getPackages } from "../api/packages";
 
+const formatFlightDate = (value) => {
+  if (!value) return "Fecha no disponible";
+  return new Intl.DateTimeFormat("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(value));
+};
+
 const Packages = () => {
   const [search, setSearch] = useState("");
   const [agency, setAgency] = useState("Todas las agencias");
@@ -72,8 +82,12 @@ const Packages = () => {
         </div>
         {filteredPackages.map((item) => (
           <article className="package-row" key={item.id}>
-            <div className={`package-image ${item.accent}`} aria-hidden="true">
-              <span>{item.hotel_name}</span>
+            <div className="package-image coral">
+              {item.hotel_photo ? (
+                <img src={item.hotel_photo} alt={item.hotel_name} />
+              ) : (
+                <span>{item.hotel_name}</span>
+              )}
             </div>
             <div className="package-info">
               <div className="package-title-line">
@@ -86,8 +100,8 @@ const Packages = () => {
               <p className="package-description">{item.description}</p>
               <div className="package-meta">
                 <span>Hotel: {item.hotel_name}</span>
-                <span>Ida: {item.outbound_flight_id}</span>
-                <span>Vuelta: {item.return_flight_id}</span>
+                <span>Ida: {formatFlightDate(item.outbound_flight_date)}</span>
+                <span>Vuelta: {formatFlightDate(item.return_flight_date)}</span>
               </div>
             </div>
             <div className="package-price">

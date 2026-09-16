@@ -11,7 +11,7 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    agency: null,
+    agency: '',
     user_type: USER_TYPE_MAP.END_USER,
   })
   const [agencies, setAgencies] = useState([])
@@ -57,8 +57,8 @@ const Register = () => {
       return
     }
 
-    if (data.user_type === USER_TYPE_MAP.AGENCY && !data.agency.trim()) {
-      setError('Ingresá el nombre de la agencia')
+    if (data.user_type === USER_TYPE_MAP.AGENCY && !data.agency) {
+      setError('Seleccioná una agencia')
       return
     }
 
@@ -70,7 +70,7 @@ const Register = () => {
         user_type: data.user_type,
         name: data.name.trim(),
         password: data.password,
-        ...(data.user_type === USER_TYPE_MAP.AGENCY ? { agency: data.agency.trim() } : {}),
+        ...(data.user_type === USER_TYPE_MAP.AGENCY ? { agency: Number(data.agency) } : {}),
       }
 
       await registerUser(payload)
@@ -178,10 +178,11 @@ const Register = () => {
             id="RegisterAgency"
             name="agency"
             className="registerInput register-select"
-            value={data.agency}
+            value={data.agency || ''}
             onChange={handleInputChange}
           >
-            {agencies.map(agency => (<option value={agency.id}>{agency.name}</option>))}
+            <option value="">Seleccioná una agencia</option>
+            {agencies.map(agency => (<option key={agency.id} value={agency.id}>{agency.name}</option>))}
           </select>
 
             </>
