@@ -40,6 +40,13 @@ function getLinks() {
       ...commonLinks,
     ];
   }
+  if (user.user_type.toString() === USER_TYPE_MAP.AGENCY) {
+    return [
+      { label: "Paquetes", path: ROUTES.PACKAGES },
+      { label: "Crear paquete", path: "/packages/new" },
+      ...commonLinks,
+    ];
+  }
   return [];
 }
 

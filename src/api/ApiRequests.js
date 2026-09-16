@@ -16,7 +16,11 @@ const API_BASE_URL =
 
   export const apiAuthenticatedClient = axios.create({
     baseURL: `${API_BASE_URL}/api`,
-    headers: getAuthHeaders(),
+  });
+
+  apiAuthenticatedClient.interceptors.request.use((config) => {
+    config.headers = { ...config.headers, ...getAuthHeaders() };
+    return config;
   });
 
 

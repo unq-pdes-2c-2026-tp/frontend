@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import { Agencies } from "./components/admin/Agencies";
+import CreatePackage from "./components/CreatePackage";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
@@ -32,6 +33,7 @@ const App = () => {
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.REGISTER} element={<Register />} />
         <Route path={ROUTES.PACKAGES} element={<Packages />} />
+  <Route path="/packages/new" element={<CreatePackage />} />
         <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path="/" element={user? <Navigate to={ROUTES.PACKAGES} /> :<Navigate to={ROUTES.LOGIN} /> } />

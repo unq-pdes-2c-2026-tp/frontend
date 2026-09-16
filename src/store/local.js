@@ -1,17 +1,18 @@
 
 export const getStoredAuthToken = () => {
   if (typeof window === "undefined") return "";
-  const token = localStorage.getItem("token") || "";
-  return token;
+  return localStorage.getItem("token") || "";
 };
 
 export const getStoredUser = () => {
-  if (typeof window === "undefined") return "";
+  if (typeof window === "undefined") return null;
   const user = localStorage.getItem("user");
-  if (!user)
-    return null
-
-  return JSON.parse(user);
+  if (!user) return null;
+  try {
+    return JSON.parse(user);
+  } catch {
+    return null;
+  }
 };
 
 

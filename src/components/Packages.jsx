@@ -1,88 +1,31 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../styles/packages.css";
 import { Page } from "./Page";
 import { asMoney } from "../format-utils/money";
-
-const packages = [
-  {
-    id: 2048,
-    name: "Escapada a Bariloche",
-    description:
-      "Una escapada para disfrutar de los lagos, la montaña y la gastronomía patagónica.",
-    agency: "Andes Travel",
-    hotel: "Hotel Patagonia",
-    outboundFlightId: 4512,
-    returnFlightId: 4513,
-    price: 485000,
-    accent: "coral",
-  },
-  {
-    id: 1986,
-    name: "Rutas de la Toscana",
-    description:
-      "Recorrido por pueblos medievales, viñedos y ciudades históricas de Italia.",
-    agency: "Mundo Abierto",
-    hotel: "Villa Toscana",
-    outboundFlightId: 7821,
-    returnFlightId: 7822,
-    price: 1240000,
-    accent: "blue",
-  },
-  {
-    id: 2011,
-    name: "Caribe todo incluido",
-    description:
-      "Descanso frente al mar con alojamiento, comidas y actividades incluidas.",
-    agency: "Horizonte Turismo",
-    hotel: "Caribe Resort",
-    outboundFlightId: 6134,
-    returnFlightId: 6135,
-    price: 890000,
-    accent: "gold",
-  },
-  {
-    id: 2072,
-    name: "Aventura en la Patagonia",
-    description:
-      "Naturaleza, glaciares y excursiones para descubrir el sur argentino.",
-    agency: "Andes Travel",
-    hotel: "Calafate Lodge",
-    outboundFlightId: 5290,
-    returnFlightId: 5291,
-    price: 620000,
-    accent: "green",
-  },
-  {
-    id: 1954,
-    name: "Japón esencial",
-    description:
-      "Una primera visita a Japón combinando la energía de Tokio y la tradición de Kioto.",
-    agency: "Mundo Abierto",
-    hotel: "Sakura Central Hotel",
-    outboundFlightId: 9044,
-    returnFlightId: 9045,
-    price: 2180000,
-    accent: "pink",
-  },
-];
+import { getPackages } from "../api/packages";
 
 const Packages = () => {
   const [search, setSearch] = useState("");
   const [agency, setAgency] = useState("Todas las agencias");
+  const [packages, setPackages] = useState([]);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    getPackages().then(({ data }) => setPackages(data)).catch(() => setError("No se pudieron cargar los paquetes."));
+  }, []);
   const agencies = [
     "Todas las agencias",
-    ...new Set(packages.map((item) => item.agency)),
+    ...new Set(packages.map((item) => item.agency_name)),
   ];
   const filteredPackages = useMemo(
     () =>
       packages.filter((item) => {
         const matchesAgency =
-          agency === "Todas las agencias" || item.agency === agency;
+          agency === "Todas las agencias" || item.agency_name === agency;
         const searchableText =
-          `${item.name} ${item.description} ${item.agency} ${item.hotel}`.toLowerCase();
+          `${item.name} ${item.description} ${item.agency_name} ${item.hotel_name}`.toLowerCase();
         return matchesAgency && searchableText.includes(search.toLowerCase());
       }),
-    [agency, search],
+    [agency, search, packages],
   );
 
   return (
@@ -122,6 +65,7 @@ const Packages = () => {
         </label>
       </section>
       <section className="package-list" aria-live="polite">
+        {error && <div className="alert alert-danger">{error}</div>}
         <div className="list-header">
           <span>{filteredPackages.length} resultados</span>
           <span>Ordenado por más recientes</span>
@@ -129,21 +73,21 @@ const Packages = () => {
         {filteredPackages.map((item) => (
           <article className="package-row" key={item.id}>
             <div className={`package-image ${item.accent}`} aria-hidden="true">
-              <span>{item.hotel}</span>
+              <span>{item.hotel_name}</span>
             </div>
             <div className="package-info">
               <div className="package-title-line">
                 <h2>{item.name}</h2>
               </div>
               <p className="agency">
-                <span className="agency-dot">{item.agency.charAt(0)}</span>
-                {item.agency}
+                <span className="agency-dot">{item.agency_name?.charAt(0)}</span>
+                {item.agency_name}
               </p>
               <p className="package-description">{item.description}</p>
               <div className="package-meta">
-                <span>Hotel: {item.hotel}</span>
-                <span>Ida: {item.outboundFlightId}</span>
-                <span>Vuelta: {item.returnFlightId}</span>
+                <span>Hotel: {item.hotel_name}</span>
+                <span>Ida: {item.outbound_flight_id}</span>
+                <span>Vuelta: {item.return_flight_id}</span>
               </div>
             </div>
             <div className="package-price">
