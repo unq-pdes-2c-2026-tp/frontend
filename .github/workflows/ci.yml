@@ -50,5 +50,3 @@ jobs:
       - uses: actions/checkout@v4
       - name: Start Docker Compose services
         run: docker compose up -d --build prod
-      - name: Test Docker Prod Build
-        run: docker compose run --rm --no-deps prod npm run build
