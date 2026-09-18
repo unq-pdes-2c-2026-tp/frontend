@@ -58,7 +58,7 @@ nav {
 }
 
 .nav-link.active::after {
-  content: '';
+  content: "";
   position: absolute;
   height: 3px;
   border-radius: 2px;
@@ -204,7 +204,9 @@ h1 {
   padding: 17px 20px 17px 17px;
   border-top: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.58);
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 
 .package-row:hover {
@@ -227,7 +229,7 @@ h1 {
 
 .package-image::before,
 .package-image::after {
-  content: '';
+  content: "";
   position: absolute;
   border-radius: 50%;
   opacity: 0.5;
@@ -252,11 +254,21 @@ h1 {
   z-index: 1;
 }
 
-.coral { background: #da7858; }
-.blue { background: #648d9c; }
-.gold { background: #c29b52; }
-.green { background: #688c77; }
-.pink { background: #b47882; }
+.coral {
+  background: #da7858;
+}
+.blue {
+  background: #648d9c;
+}
+.gold {
+  background: #c29b52;
+}
+.green {
+  background: #688c77;
+}
+.pink {
+  background: #b47882;
+}
 
 .package-info {
   flex: 1;
@@ -324,7 +336,7 @@ h2 {
 }
 
 .package-meta span + span::before {
-  content: '/';
+  content: "/";
   margin-right: 18px;
   color: #c3ccca;
 }
