@@ -8,35 +8,41 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import { Agencies } from "./components/admin/Agencies";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
 import { ROUTES } from "./routes/constants";
 
-
 const App = () => {
-  const user = getStoredUser()
+  const user = getStoredUser();
   return (
-    <SnackbarProvider
-    autoHideDuration={5000}
->
-    <BrowserRouter>
-      <Routes>
-        {/* Ejemplo de routing, los privados en caso de no estar autenticado te redirigen al login. */}
-        {/*
+    <SnackbarProvider autoHideDuration={5000}>
+      <BrowserRouter>
+        <Routes>
+          {/* Ejemplo de routing, los privados en caso de no estar autenticado te redirigen al login. */}
+          {/*
                 <Route element={<PublicRoute />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/packages" element={<Packages />} />
                 </Route>
                 */}
-        <Route path={ROUTES.LOGIN} element={<Login />} />
-        <Route path={ROUTES.REGISTER} element={<Register />} />
-        <Route path={ROUTES.PACKAGES} element={<Packages />} />
-        <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
-        <Route path={ROUTES.PROFILE} element={<Profile />} />
-        <Route path="/" element={user? <Navigate to={ROUTES.PACKAGES} /> :<Navigate to={ROUTES.LOGIN} /> } />
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.REGISTER} element={<Register />} />
+          <Route path={ROUTES.PACKAGES} element={<Packages />} />
+          <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
+          <Route path={ROUTES.PROFILE} element={<Profile />} />
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Navigate to={ROUTES.PACKAGES} />
+              ) : (
+                <Navigate to={ROUTES.LOGIN} />
+              )
+            }
+          />
         </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
     </SnackbarProvider>
   );
 };

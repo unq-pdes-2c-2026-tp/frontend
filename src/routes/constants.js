@@ -5,4 +5,4 @@ export const ROUTES = {
   PACKAGES: "/packages",
   PROFILE: "/profile",
   REGISTER: "/register",
-}
+};
