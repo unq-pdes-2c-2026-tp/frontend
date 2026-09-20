@@ -1,20 +1,11 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
-export function useModal() {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  return [handleClose, handleShow, show]
-}
-
-function CTVModal({heading, body, okLabel, okAction, handleClose, show}) {
+function CTVModal({ heading, body, okLabel, okAction, handleClose, show }) {
   const onAccept = () => {
     okAction();
     handleClose();
-  }
+  };
 
   return (
     <>
