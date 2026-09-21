@@ -13,19 +13,14 @@ export const getAuthHeaders = () => {
   return token ? { Authorization: `Token ${token}` } : {};
 };
 
-  export const getAuthHeaders = () => {
-    const token = getStoredAuthToken();
-    return token ? { Authorization: `Token ${token}` } : {};
-  };
-
-  apiAuthenticatedClient.interceptors.request.use((config) => {
-    config.headers = { ...config.headers, ...getAuthHeaders() };
-    return config;
-  });
-
 export const apiAuthenticatedClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
   headers: getAuthHeaders(),
+});
+
+apiAuthenticatedClient.interceptors.request.use((config) => {
+  config.headers = { ...config.headers, ...getAuthHeaders() };
+  return config;
 });
 
 export const uploadProfilePicture = (formData) => {
