@@ -5,6 +5,6 @@ const arsFormatter = new Intl.NumberFormat('es-AR', {
   maximumFractionDigits: 2,
 });
 
-export function asMoney(amount){
-return arsFormatter.format(amount)
+export function asMoney(amount) {
+  return arsFormatter.format(amount);
 }

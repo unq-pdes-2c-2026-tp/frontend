@@ -1,4 +1,3 @@
-
 export const getStoredAuthToken = () => {
   if (typeof window === "undefined") return "";
   return localStorage.getItem("token") || "";
@@ -14,7 +13,6 @@ export const getStoredUser = () => {
     return null;
   }
 };
-
 
 export function storeLogout() {
   localStorage.removeItem("token");

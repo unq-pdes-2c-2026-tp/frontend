@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useNavigateByUserType } from "../routes/useNavigateByUserType"
+import { useNavigateByUserType } from "../routes/useNavigateByUserType";
 import "../styles/Login.css";
 import { login } from "../api/auth";
 
 const Login = () => {
   const navigateByUserType = useNavigateByUserType();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);

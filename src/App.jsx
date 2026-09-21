@@ -14,17 +14,14 @@ import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
 import { ROUTES } from "./routes/constants";
 
-
 const App = () => {
-  const user = getStoredUser()
+  const user = getStoredUser();
   return (
-    <SnackbarProvider
-    autoHideDuration={5000}
->
-    <BrowserRouter>
-      <Routes>
-        {/* Ejemplo de routing, los privados en caso de no estar autenticado te redirigen al login. */}
-        {/*
+    <SnackbarProvider autoHideDuration={5000}>
+      <BrowserRouter>
+        <Routes>
+          {/* Ejemplo de routing, los privados en caso de no estar autenticado te redirigen al login. */}
+          {/*
                 <Route element={<PublicRoute />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/packages" element={<Packages />} />
@@ -33,12 +30,22 @@ const App = () => {
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.REGISTER} element={<Register />} />
         <Route path={ROUTES.PACKAGES} element={<Packages />} />
-  <Route path="/packages/new" element={<CreatePackage />} />
+        <Route path="/packages/new" element={<CreatePackage />} />
         <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path="/" element={user? <Navigate to={ROUTES.PACKAGES} /> :<Navigate to={ROUTES.LOGIN} /> } />
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Navigate to={ROUTES.PACKAGES} />
+              ) : (
+                <Navigate to={ROUTES.LOGIN} />
+              )
+            }
+          />
         </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
     </SnackbarProvider>
   );
 };

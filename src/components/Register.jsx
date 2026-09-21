@@ -1,60 +1,65 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
-import { USER_TYPE_MAP } from '../constants'
-import '../styles/Register.css'
-import { getAgencies } from '../api/agencies'
-import { registerUser } from '../api/auth'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { USER_TYPE_MAP } from "../constants";
+import "../styles/Register.css";
+import { getAgencies } from "../api/agencies";
+import { registerUser } from "../api/auth";
 
 const Register = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setData] = useState({
     name: '',
     email: '',
     password: '',
     agency: '',
     user_type: USER_TYPE_MAP.END_USER,
-  })
-  const [agencies, setAgencies] = useState([])
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  });
+  const [agencies, setAgencies] = useState([]);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(()=>{
-    getAgencies().then((response)=>{
-      setAgencies(response.data)
-    })
-  }, [])
+  useEffect(() => {
+    getAgencies().then((response) => {
+      setAgencies(response.data);
+    });
+  }, []);
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setData((currentData) => ({
       ...currentData,
       [name]: value,
-    }))
+    }));
     if (error) {
-      setError('')
+      setError("");
     }
-  }
+  };
 
   const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value)
+    setConfirmPassword(event.target.value);
     if (error) {
-      setError('')
+      setError("");
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    setError('')
+    event.preventDefault();
+    setError("");
 
-    if (!data.name.trim() || !data.email.trim() || !data.password || !confirmPassword) {
-      setError('Completá todos los campos para continuar')
-      return
+    if (
+      !data.name.trim() ||
+      !data.email.trim() ||
+      !data.password ||
+      !confirmPassword
+    ) {
+      setError("Completá todos los campos para continuar");
+      return;
     }
 
     if (data.password !== confirmPassword) {
-      setError('Las contraseñas no coinciden')
-      return
+      setError("Las contraseñas no coinciden");
+      return;
     }
 
     if (data.user_type === USER_TYPE_MAP.AGENCY && !data.agency) {
@@ -62,7 +67,7 @@ const Register = () => {
       return
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       const payload = {
@@ -73,24 +78,35 @@ const Register = () => {
         ...(data.user_type === USER_TYPE_MAP.AGENCY ? { agency: Number(data.agency) } : {}),
       }
 
-      await registerUser(payload)
-      navigate('/login')
+      await registerUser(payload);
+      navigate("/login");
     } catch (requestError) {
-      const message = requestError.response?.data || 'Falló la conexión con el servidor'
-      setError(typeof message === 'string' ? message : 'No se pudo registrar el usuario')
+      const message =
+        requestError.response?.data || "Falló la conexión con el servidor";
+      setError(
+        typeof message === "string"
+          ? message
+          : "No se pudo registrar el usuario",
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <main className="register-page">
       <header className="register-topbar">
-        <a className="register-brand" href="/login" aria-label="Comprá tu Viaje, inicio">
+        <a
+          className="register-brand"
+          href="/login"
+          aria-label="Comprá tu Viaje, inicio"
+        >
           <span className="register-brand-mark">CTV</span>
           <span>Comprá tu Viaje</span>
         </a>
-        <span className="register-topbar-copy">Creá tu cuenta para empezar</span>
+        <span className="register-topbar-copy">
+          Creá tu cuenta para empezar
+        </span>
       </header>
 
       <section className="register-layout">
@@ -99,11 +115,19 @@ const Register = () => {
           <h1 data-testid="register-title" id="RegisterTitle">
             Registrate
           </h1>
-          <p>Gracias a tu cuenta podés explorar viajes, guardar favoritos y gestionar tus reservas.</p>
+          <p>
+            Gracias a tu cuenta podés explorar viajes, guardar favoritos y
+            gestionar tus reservas.
+          </p>
         </div>
 
         <form className="Register-main register-card" onSubmit={handleSubmit}>
-          <div data-testid="register-error" id="alertReg" className="alert alert-danger register-error" role="alert">
+          <div
+            data-testid="register-error"
+            id="alertReg"
+            className="alert alert-danger register-error"
+            role="alert"
+          >
             {error}
           </div>
 
@@ -173,7 +197,9 @@ const Register = () => {
 
           {data.user_type === USER_TYPE_MAP.AGENCY && (
             <>
-              <label htmlFor="RegisterAgencySelect">Selecciona una agencia</label>
+              <label htmlFor="RegisterAgencySelect">
+                Selecciona una agencia
+              </label>
               <select
             id="RegisterAgency"
             name="agency"
@@ -195,16 +221,19 @@ const Register = () => {
             className="register-submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Registrando...' : 'Registrarme'}
+            {isSubmitting ? "Registrando..." : "Registrarme"}
           </button>
 
           <div className="register-login">
-            ¿Ya tenés una cuenta? <button type="button" onClick={() => navigate('/login')}>Iniciar sesión</button>
+            ¿Ya tenés una cuenta?{" "}
+            <button type="button" onClick={() => navigate("/login")}>
+              Iniciar sesión
+            </button>
           </div>
         </form>
       </section>
     </main>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

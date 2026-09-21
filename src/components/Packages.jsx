@@ -121,7 +121,7 @@ const Packages = () => {
           </div>
         )}
       </section>
-      </Page>
+    </Page>
   );
 };
 

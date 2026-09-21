@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Page } from "../Page";
 import { getAgencies } from "../../api/agencies";
-import { useModal } from "../useModal";
+import { useModal } from "../../hooks/useModal";
 import { AgencyDeleteModal } from "./AgencyDeleteModal";
 import { getCurrentMonth } from "../../format-utils/dates";
 import { asMoney } from "../../format-utils/money";
