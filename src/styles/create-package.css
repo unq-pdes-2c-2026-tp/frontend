@@ -1,0 +1,80 @@
+.create-package-page {
+  padding-bottom: 70px;
+}
+
+.create-package-form {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+
+.create-package-form .form-label {
+  color: var(--text-h);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.create-package-form .form-control,
+.create-package-form .form-select {
+  border-radius: 0;
+  border-color: var(--border);
+  min-height: 44px;
+}
+
+.create-package-form .form-control:focus,
+.create-package-form .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(230, 109, 76, 0.12);
+}
+
+.flight-picker {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+}
+
+.section-label {
+  color: var(--accent-dark);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.create-submit {
+  background: var(--accent);
+  border-color: var(--accent);
+  border-radius: 0;
+}
+
+.hotel-preview {
+  border: 1px solid var(--border);
+  background: white;
+}
+
+.hotel-preview img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.hotel-placeholder {
+  height: 220px;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  color: white;
+  background: #648d9c;
+  font: 26px var(--heading);
+  text-align: center;
+}
+
+.hotel-preview h2 {
+  margin-top: 12px;
+  color: var(--text-h);
+  font: 400 25px/1.1 var(--heading);
+}
+
+.hotel-preview p {
+  margin-top: 10px;
+  color: var(--text);
+  font-size: 13px;
+}

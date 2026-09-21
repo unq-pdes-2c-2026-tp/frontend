@@ -18,6 +18,11 @@ export const apiAuthenticatedClient = axios.create({
   headers: getAuthHeaders(),
 });
 
+apiAuthenticatedClient.interceptors.request.use((config) => {
+  config.headers = { ...config.headers, ...getAuthHeaders() };
+  return config;
+});
+
 export const uploadProfilePicture = (formData) => {
   return apiAuthenticatedClient.post("/users/profile-picture/", formData);
 };

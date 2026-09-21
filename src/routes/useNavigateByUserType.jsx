@@ -10,6 +10,7 @@ export function useNavigateByUserType() {
         navigate(ROUTES.PACKAGES);
         break;
       case USER_TYPE_MAP.AGENCY:
+        navigate(ROUTES.PACKAGES);
         break;
       case USER_TYPE_MAP.ADMIN:
         navigate(ROUTES.ADMIN_AGENCIES);
