@@ -262,11 +262,21 @@ h1 {
   inset: 0;
 }
 
-.coral { background: #da7858; }
-.blue { background: #648d9c; }
-.gold { background: #c29b52; }
-.green { background: #688c77; }
-.pink { background: #b47882; }
+.coral {
+  background: #da7858;
+}
+.blue {
+  background: #648d9c;
+}
+.gold {
+  background: #c29b52;
+}
+.green {
+  background: #688c77;
+}
+.pink {
+  background: #b47882;
+}
 
 .package-info {
   flex: 1;

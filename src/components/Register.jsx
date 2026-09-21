@@ -8,10 +8,10 @@ import { registerUser } from "../api/auth";
 const Register = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    agency: '',
+    name: "",
+    email: "",
+    password: "",
+    agency: "",
     user_type: USER_TYPE_MAP.END_USER,
   });
   const [agencies, setAgencies] = useState([]);
@@ -63,8 +63,8 @@ const Register = () => {
     }
 
     if (data.user_type === USER_TYPE_MAP.AGENCY && !data.agency) {
-      setError('Seleccioná una agencia')
-      return
+      setError("Seleccioná una agencia");
+      return;
     }
 
     setIsSubmitting(true);
@@ -75,8 +75,10 @@ const Register = () => {
         user_type: data.user_type,
         name: data.name.trim(),
         password: data.password,
-        ...(data.user_type === USER_TYPE_MAP.AGENCY ? { agency: Number(data.agency) } : {}),
-      }
+        ...(data.user_type === USER_TYPE_MAP.AGENCY
+          ? { agency: Number(data.agency) }
+          : {}),
+      };
 
       await registerUser(payload);
       navigate("/login");
@@ -201,16 +203,19 @@ const Register = () => {
                 Selecciona una agencia
               </label>
               <select
-            id="RegisterAgency"
-            name="agency"
-            className="registerInput register-select"
-            value={data.agency || ''}
-            onChange={handleInputChange}
-          >
-            <option value="">Seleccioná una agencia</option>
-            {agencies.map(agency => (<option key={agency.id} value={agency.id}>{agency.name}</option>))}
-          </select>
-
+                id="RegisterAgency"
+                name="agency"
+                className="registerInput register-select"
+                value={data.agency || ""}
+                onChange={handleInputChange}
+              >
+                <option value="">Seleccioná una agencia</option>
+                {agencies.map((agency) => (
+                  <option key={agency.id} value={agency.id}>
+                    {agency.name}
+                  </option>
+                ))}
+              </select>
             </>
           )}
 

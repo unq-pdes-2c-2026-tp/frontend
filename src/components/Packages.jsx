@@ -20,7 +20,9 @@ const Packages = () => {
   const [packages, setPackages] = useState([]);
   const [error, setError] = useState("");
   useEffect(() => {
-    getPackages().then(({ data }) => setPackages(data)).catch(() => setError("No se pudieron cargar los paquetes."));
+    getPackages()
+      .then(({ data }) => setPackages(data))
+      .catch(() => setError("No se pudieron cargar los paquetes."));
   }, []);
   const agencies = [
     "Todas las agencias",
@@ -94,7 +96,9 @@ const Packages = () => {
                 <h2>{item.name}</h2>
               </div>
               <p className="agency">
-                <span className="agency-dot">{item.agency_name?.charAt(0)}</span>
+                <span className="agency-dot">
+                  {item.agency_name?.charAt(0)}
+                </span>
                 {item.agency_name}
               </p>
               <p className="package-description">{item.description}</p>
