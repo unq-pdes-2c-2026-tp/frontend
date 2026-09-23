@@ -13,7 +13,7 @@ export function useNavigateByUserType() {
         navigate(ROUTES.PACKAGES);
         break;
       case USER_TYPE_MAP.ADMIN:
-        navigate(ROUTES.ADMIN_AGENCIES);
+        navigate(ROUTES.ADMIN_HOME);
         break;
     }
   };

@@ -7,7 +7,6 @@ import { logout } from "../api/auth";
 
 function getLinks() {
   const user = getStoredUser();
-  console.log(user);
   if (!user) return [];
 
   const commonLinks = [
@@ -33,6 +32,10 @@ function getLinks() {
 
   if (user.user_type.toString() === USER_TYPE_MAP.ADMIN) {
     return [
+      {
+        label: "Inicio",
+        path: ROUTES.ADMIN_HOME,
+      },
       {
         label: "Agencias",
         path: ROUTES.ADMIN_AGENCIES,

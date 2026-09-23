@@ -13,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
 import { ROUTES } from "./routes/constants";
+import { AdminHome } from "./components/admin/home/AdminHome";
 
 const App = () => {
   const user = getStoredUser();
@@ -32,6 +33,7 @@ const App = () => {
           <Route path={ROUTES.PACKAGES} element={<Packages />} />
           <Route path="/packages/new" element={<CreatePackage />} />
           <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
+          <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />
           <Route
             path="/"
