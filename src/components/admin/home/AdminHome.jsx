@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getTopCities, getTopSpenderUsers } from "../../../api/adminInsights";
+import {
+  getTopCitiesByPurchases,
+  getTopCitiesByReviews,
+  getTopSpenderUsers,
+} from "../../../api/adminInsights";
 import { Col, Row } from "react-bootstrap";
 import { Page } from "../../Page";
 import { asMoney } from "../../../format-utils/money";
@@ -8,14 +12,23 @@ import { AdminTable } from "./AdminTable";
 
 export function AdminHome() {
   const [topSpenders, setTopSpenders] = useState([]);
-  const [topCities, setTopCities] = useState([]);
+  const [topCitiesByPurchases, setTopCitiesByPurchases] = useState([]);
+  const [topCitiesByReviews, setTopCitiesByReviews] = useState([]);
 
   useEffect(() => {
     getTopSpenderUsers().then((response) => setTopSpenders(response.data));
   }, []);
 
   useEffect(() => {
-    getTopCities().then((response) => setTopCities(response.data));
+    getTopCitiesByPurchases().then((response) =>
+      setTopCitiesByPurchases(response.data),
+    );
+  }, []);
+
+  useEffect(() => {
+    getTopCitiesByReviews().then((response) =>
+      setTopCitiesByReviews(response.data),
+    );
   }, []);
 
   return (
@@ -29,7 +42,8 @@ export function AdminHome() {
         }}
       >
         <TopSpenders spenders={topSpenders} />
-        <TopCities cities={topCities} />
+        <TopCitiesByPurchases cities={topCitiesByPurchases} />
+        <TopCitiesByReviews cities={topCitiesByReviews} />
       </div>
     </Page>
   );
@@ -46,13 +60,24 @@ function TopSpenders({ spenders }) {
   );
 }
 
-function TopCities({ cities }) {
+function TopCitiesByPurchases({ cities }) {
   return (
     <AdminTable
       items={cities}
       label="Top destinos (paquetes vendidos)"
       emptyLabel="Aún no hay destinos"
-      Child={City}
+      Child={CityPurchase}
+    />
+  );
+}
+
+function TopCitiesByReviews({ cities }) {
+  return (
+    <AdminTable
+      items={cities}
+      label="Top destinos (por puntaje)"
+      emptyLabel="Aún no hay destinos puntuados"
+      Child={CityReview}
     />
   );
 }
@@ -82,12 +107,23 @@ function Spender({ item }) {
   );
 }
 
-function City({ item }) {
+function CityPurchase({ item }) {
   return (
     <Row>
       <Col>{item.city.name}</Col>
       <Col style={{ textAlign: "right", alignContent: "center" }}>
         {item.total_purchases}
+      </Col>
+    </Row>
+  );
+}
+
+function CityReview({ item }) {
+  return (
+    <Row>
+      <Col>{item.city.name}</Col>
+      <Col style={{ textAlign: "right", alignContent: "center" }}>
+        {item.avg_reviews}
       </Col>
     </Row>
   );
