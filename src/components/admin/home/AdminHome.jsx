@@ -9,6 +9,7 @@ import { Page } from "../../Page";
 import { asMoney } from "../../../format-utils/money";
 import "../../../styles/AdminHome.css";
 import { AdminTable } from "./AdminTable";
+import { FaStar } from "react-icons/fa";
 
 export function AdminHome() {
   const [topSpenders, setTopSpenders] = useState([]);
@@ -123,7 +124,8 @@ function CityReview({ item }) {
     <Row>
       <Col>{item.city.name}</Col>
       <Col style={{ textAlign: "right", alignContent: "center" }}>
-        {item.avg_reviews}
+        <FaStar color="orange" />
+        {item.avg_reviews}/10
       </Col>
     </Row>
   );
