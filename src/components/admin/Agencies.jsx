@@ -12,6 +12,7 @@ import { AgencyCreateModal } from "./AgencyCreateModal";
 import { MdEdit } from "react-icons/md";
 import { IconButton } from "../IconButton";
 import { AgencyUpdateModal } from "./AgencyUpdateModal";
+import { GrayStar, Stars } from "../Stars";
 
 function Agency({ agency, reloadAgencies }) {
   const [handleDeleteClose, handleDeleteShow, showDeleteModal] = useModal();
@@ -24,6 +25,11 @@ function Agency({ agency, reloadAgencies }) {
           <Card.Title>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div>{agency.name}</div>
+              {agency.avg_score ? (
+                <Stars amount={agency.avg_score} />
+              ) : (
+                <GrayStar />
+              )}
               <IconButton
                 onClick={handleUpdateShow}
                 icon={<MdEdit size={20} color="gray" />}
