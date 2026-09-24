@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Page } from "../Page";
-import { getAgencies } from "../../api/agencies";
+import { getDetailedAgencies } from "../../api/agencies";
 import { useModal } from "../../hooks/useModal";
 import { AgencyDeleteModal } from "./AgencyDeleteModal";
 import { getCurrentMonth } from "../../format-utils/dates";
@@ -30,9 +30,19 @@ function Agency({ agency, reloadAgencies }) {
               />
             </div>
           </Card.Title>
-          <Card.Text>
-            Recaudación de {currentMonth}: {asMoney(100000)}
-          </Card.Text>
+          {parseFloat(agency.total_revenue) > 0 ? (
+            <Card.Text>
+              Recaudación de {currentMonth}{" "}
+              <div style={{ fontWeight: "bold" }}>
+                {" "}
+                {asMoney(agency.total_revenue)}
+              </div>
+            </Card.Text>
+          ) : (
+            <Card.Text style={{ fontStyle: "italic", color: "gray" }}>
+              Sin recaudación
+            </Card.Text>
+          )}
           <div style={{ display: "flex", gap: 8 }}>
             <Button variant="outline-danger" onClick={handleDeleteShow}>
               Dar de baja
@@ -73,7 +83,7 @@ export function Agencies() {
 
   const reloadAgencies = () => setUpdateAgencies((prev) => !prev);
   useEffect(() => {
-    getAgencies().then((response) => {
+    getDetailedAgencies().then((response) => {
       console.log(response.data);
       setAgencies(response.data);
     });
