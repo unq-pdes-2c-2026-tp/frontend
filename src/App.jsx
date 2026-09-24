@@ -14,9 +14,11 @@ import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
 import { ROUTES } from "./routes/constants";
 import { AdminHome } from "./components/admin/home/AdminHome";
+import { getDefaultRouteByUserType } from "./routes/useNavigateByUserType";
 
 const App = () => {
   const user = getStoredUser();
+  const route = getDefaultRouteByUserType(user.user_type);
   return (
     <SnackbarProvider autoHideDuration={5000}>
       <BrowserRouter>
@@ -39,7 +41,7 @@ const App = () => {
             path="/"
             element={
               user ? (
-                <Navigate to={ROUTES.PACKAGES} />
+                route && <Navigate to={route} />
               ) : (
                 <Navigate to={ROUTES.LOGIN} />
               )
