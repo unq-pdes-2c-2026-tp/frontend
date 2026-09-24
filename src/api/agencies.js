@@ -6,6 +6,10 @@ export const getAgencies = () => {
   return apiClient.get(AGENCIES_URL);
 };
 
+export const getDetailedAgencies = () => {
+  return apiAuthenticatedClient.get(`${AGENCIES_URL}detailed/`);
+};
+
 export const deleteAgency = (agencyId) => {
   return apiAuthenticatedClient.delete(`${AGENCIES_URL}${agencyId}/`);
 };
