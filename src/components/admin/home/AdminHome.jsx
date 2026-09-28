@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import {
+  getTopAgenciesByRevenue,
   getTopCitiesByPurchases,
   getTopCitiesByReviews,
   getTopSpenderUsers,
 } from "../../../api/adminInsights";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Page } from "../../Page";
 import { asMoney } from "../../../format-utils/money";
 import "../../../styles/AdminHome.css";
 import { AdminTable } from "./AdminTable";
 import { Stars } from "../../Stars";
+import { useNavigate } from "react-router";
+import { ROUTES } from "../../../routes/constants";
 
 export function AdminHome() {
   const [topSpenders, setTopSpenders] = useState([]);
   const [topCitiesByPurchases, setTopCitiesByPurchases] = useState([]);
   const [topCitiesByReviews, setTopCitiesByReviews] = useState([]);
+  const [topAgenciesByRevenue, setTopAgenciesByRevenue] = useState([]);
 
   useEffect(() => {
     getTopSpenderUsers().then((response) => setTopSpenders(response.data));
@@ -32,19 +36,26 @@ export function AdminHome() {
     );
   }, []);
 
+  useEffect(() => {
+    getTopAgenciesByRevenue().then((response) =>
+      setTopAgenciesByRevenue(response.data),
+    );
+  }, []);
+
   return (
     <Page>
       <div
         style={{
           display: "grid",
           margin: 8,
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gridTemplateColumns: "1fr 1fr 1fr",
           gap: 8,
         }}
       >
         <TopSpenders spenders={topSpenders} />
         <TopCitiesByPurchases cities={topCitiesByPurchases} />
         <TopCitiesByReviews cities={topCitiesByReviews} />
+        <TopAgenciesByRevenue agencies={topAgenciesByRevenue} />
       </div>
     </Page>
   );
@@ -69,6 +80,29 @@ function TopCitiesByPurchases({ cities }) {
       emptyLabel="Aún no hay destinos"
       Child={CityPurchase}
     />
+  );
+}
+
+function TopAgenciesByRevenue({ agencies }) {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <AdminTable
+        items={agencies}
+        label="Top Agencias"
+        emptyLabel="Aún no hay agencias"
+        Child={AgencyRevenue}
+        Footer={() => (
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => navigate(ROUTES.ADMIN_AGENCIES)}
+          >
+            Ver todas
+          </Button>
+        )}
+      />
+    </div>
   );
 }
 
@@ -103,6 +137,17 @@ function Spender({ item }) {
       </Col>
       <Col style={{ textAlign: "right", alignContent: "center" }}>
         {asMoney(item.total_spent)}
+      </Col>
+    </Row>
+  );
+}
+
+function AgencyRevenue({ item }) {
+  return (
+    <Row>
+      <Col>{item.agency.name}</Col>
+      <Col style={{ textAlign: "right", alignContent: "center" }}>
+        {item.total_revenue}
       </Col>
     </Row>
   );

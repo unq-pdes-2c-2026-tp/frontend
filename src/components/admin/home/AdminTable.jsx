@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap";
 
-export function AdminTable({ label, emptyLabel, items, Child }) {
+export function AdminTable({ label, emptyLabel, items, Child, Footer = null }) {
   return (
     <div
       className="shadow"
@@ -36,9 +36,14 @@ export function AdminTable({ label, emptyLabel, items, Child }) {
             {emptyLabel}
           </div>
         )}
-        {items.map((item) => (
-          <Child item={item} />
-        ))}
+        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+          <div>
+            {items.map((item) => (
+              <Child item={item} />
+            ))}
+          </div>
+          {Footer && <Footer />}
+        </div>
       </Container>
     </div>
   );

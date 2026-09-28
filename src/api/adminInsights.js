@@ -10,3 +10,7 @@ export const getTopCitiesByPurchases = () => {
 export const getTopCitiesByReviews = () => {
   return apiAuthenticatedClient.get("/purchases/top-cities-by-reviews/");
 };
+
+export const getTopAgenciesByRevenue = () => {
+  return apiAuthenticatedClient.get("/purchases/top-agencies-by-revenue/");
+};
