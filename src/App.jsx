@@ -18,7 +18,7 @@ import { getDefaultRouteByUserType } from "./routes/useNavigateByUserType";
 
 const App = () => {
   const user = getStoredUser();
-  const route = getDefaultRouteByUserType(user.user_type);
+  const route = user ? getDefaultRouteByUserType(user.user_type) : null;
   return (
     <SnackbarProvider autoHideDuration={5000}>
       <BrowserRouter>

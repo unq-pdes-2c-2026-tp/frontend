@@ -52,6 +52,13 @@ nav {
   position: relative;
 }
 
+.topbar .nav-link {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  padding: 0;
+}
+
 .nav-link.active {
   color: var(--text-h);
   font-weight: bold;
