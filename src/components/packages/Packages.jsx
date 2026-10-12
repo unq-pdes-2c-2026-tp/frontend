@@ -6,32 +6,30 @@ import { asMoney } from "../../format-utils/money";
 import { formatFlightDate } from "../../format-utils/dates";
 import { getPackages } from "../../api/packages";
 import { ROUTES } from "../../routes/constants";
+import { useEffect, useState } from "react";
+import "../styles/packages.css";
+import { Page } from "./Page";
+import { asMoney } from "../format-utils/money";
+import { getPackages } from "../api/packages";
+import { getAgencies } from "../api/agencies";
+import { UNSELECTED } from "../constants";
 
 const Packages = () => {
   const [search, setSearch] = useState("");
-  const [agency, setAgency] = useState("Todas las agencias");
+  const [agency, setAgency] = useState(UNSELECTED);
+  const [agencies, setAgencies] = useState([]);
   const [packages, setPackages] = useState([]);
   const [error, setError] = useState("");
   useEffect(() => {
-    getPackages()
+    getPackages(agency, search)
       .then(({ data }) => setPackages(data))
       .catch(() => setError("No se pudieron cargar los paquetes."));
+  }, [agency, search]);
+  useEffect(() => {
+    getAgencies().then(({ data }) => {
+      setAgencies(data);
+    });
   }, []);
-  const agencies = [
-    "Todas las agencias",
-    ...new Set(packages.map((item) => item.agency_name)),
-  ];
-  const filteredPackages = useMemo(
-    () =>
-      packages.filter((item) => {
-        const matchesAgency =
-          agency === "Todas las agencias" || item.agency_name === agency;
-        const searchableText =
-          `${item.name} ${item.description} ${item.agency_name} ${item.hotel_name}`.toLowerCase();
-        return matchesAgency && searchableText.includes(search.toLowerCase());
-      }),
-    [agency, search, packages],
-  );
 
   const navigate = useNavigate();
 
@@ -62,11 +60,14 @@ const Packages = () => {
         <label className="select-field">
           <span>Agencia</span>
           <select
-            value={agency}
+            value={agency || UNSELECTED}
             onChange={(event) => setAgency(event.target.value)}
           >
+            <option key={UNSELECTED}>Todas las agencias</option>
             {agencies.map((item) => (
-              <option key={item}>{item}</option>
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
             ))}
           </select>
         </label>
@@ -74,10 +75,10 @@ const Packages = () => {
       <section className="package-list" aria-live="polite">
         {error && <div className="alert alert-danger">{error}</div>}
         <div className="list-header">
-          <span>{filteredPackages.length} resultados</span>
+          <span>{packages.length} resultados</span>
           <span>Ordenado por más recientes</span>
         </div>
-        {filteredPackages.map((item) => (
+        {packages.map((item) => (
           <article className="package-row" key={item.id}>
             <div className="package-image coral">
               {item.hotel_photo ? (
@@ -116,7 +117,7 @@ const Packages = () => {
             </div>
           </article>
         ))}
-        {filteredPackages.length === 0 && (
+        {packages.length === 0 && (
           <div className="empty-state">
             <strong>No encontramos paquetes</strong>
             <span>Probá con otro destino o agencia.</span>

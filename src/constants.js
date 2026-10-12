@@ -6,3 +6,5 @@ export const USER_TYPE_MAP = {
 
 export const PERMISSION_DENIED_MESSAGE =
   "No tenés permisos para realizar esta acción";
+
+export const UNSELECTED = -1;
