@@ -1,18 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import "../styles/packages.css";
 import { Page } from "./Page";
 import { asMoney } from "../format-utils/money";
+import { formatFlightDate } from "../format-utils/dates";
 import { getPackages } from "../api/packages";
-
-const formatFlightDate = (value) => {
-  if (!value) return "Fecha no disponible";
-  return new Intl.DateTimeFormat("es-AR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(value));
-};
+import { ROUTES } from "../routes/constants";
 
 const Packages = () => {
   const [search, setSearch] = useState("");
@@ -39,6 +32,8 @@ const Packages = () => {
       }),
     [agency, search, packages],
   );
+
+  const navigate = useNavigate();
 
   return (
     <Page>
@@ -111,7 +106,10 @@ const Packages = () => {
             <div className="package-price">
               <span>Precio</span>
               <strong>{asMoney(item.price)}</strong>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.PACKAGES_DETAIL(item.id))}
+              >
                 Ver paquete
                 <span aria-hidden="true">→</span>
               </button>
