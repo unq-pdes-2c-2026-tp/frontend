@@ -19,6 +19,7 @@ import { ROUTES } from "../../routes/constants";
 import { getStoredUser } from "../../store/local";
 import { useModal } from "../../hooks/useModal";
 import { PackageDeleteModal } from "./PackageDeleteModal";
+import { PackagePurchaseModal } from "./PackagePurchaseModal";
 
 const PackageDetail = () => {
   const { id } = useParams();
@@ -29,6 +30,8 @@ const PackageDetail = () => {
   const [error, setError] = useState("");
 
   const [handleDeleteClose, handleDeleteShow, showDeleteModal] = useModal();
+  const [handlePurchaseClose, handlePurchaseShow, showPurchaseModal] =
+    useModal();
 
   const user = getStoredUser();
   const currentUserType = user?.user_type?.toString();
@@ -51,12 +54,12 @@ const PackageDetail = () => {
       });
   }, [id]);
 
-  const handleBuy = () => {
-    alert("Función de compra en desarrollo");
-  };
-
   const handleFavorite = () => {
     alert("Función de favoritos en desarrollo");
+  };
+
+  const onConfirmPurchase = () => {
+    navigate(ROUTES.PACKAGES); // Eventualmente reemplazar por ir a Mis compras o algo asi
   };
 
   const onConfirmDelete = () => {
@@ -177,7 +180,11 @@ const PackageDetail = () => {
                   <div className="d-grid gap-2">
                     {isEndUser && (
                       <>
-                        <Button variant="primary" size="lg" onClick={handleBuy}>
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          onClick={handlePurchaseShow}
+                        >
                           Comprar paquete
                         </Button>
                         <Button
@@ -212,6 +219,15 @@ const PackageDetail = () => {
           handleClose={handleDeleteClose}
           show={showDeleteModal}
           onOk={onConfirmDelete}
+        />
+      )}
+
+      {showPurchaseModal && (
+        <PackagePurchaseModal
+          packageItem={packageDetail}
+          handleClose={handlePurchaseClose}
+          show={showPurchaseModal}
+          onOk={onConfirmPurchase}
         />
       )}
     </Page>
