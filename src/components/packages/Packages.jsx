@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import "../styles/packages.css";
-import { Page } from "./Page";
-import { asMoney } from "../format-utils/money";
-import { formatFlightDate } from "../format-utils/dates";
-import { getPackages } from "../api/packages";
-import { ROUTES } from "../routes/constants";
+import "../../styles/packages.css";
+import { Page } from "../Page";
+import { asMoney } from "../../format-utils/money";
+import { formatFlightDate } from "../../format-utils/dates";
+import { getPackages } from "../../api/packages";
+import { ROUTES } from "../../routes/constants";
 
 const Packages = () => {
   const [search, setSearch] = useState("");

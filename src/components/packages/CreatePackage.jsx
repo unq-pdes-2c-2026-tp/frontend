@@ -12,11 +12,11 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { Page } from "./Page";
-import { createPackage, getFlights, getHotels } from "../api/packages";
-import { getStoredUser } from "../store/local";
-import { USER_TYPE_MAP } from "../constants";
-import "../styles/create-package.css";
+import { Page } from "../Page";
+import { createPackage, getFlights, getHotels } from "../../api/packages";
+import { getStoredUser } from "../../store/local";
+import { USER_TYPE_MAP } from "../../constants";
+import "../../styles/create-package.css";
 
 const initialForm = {
   name: "",
