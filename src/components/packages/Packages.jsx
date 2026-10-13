@@ -12,19 +12,23 @@ import { Page } from "./Page";
 import { asMoney } from "../format-utils/money";
 import { getPackages } from "../api/packages";
 import { getAgencies } from "../api/agencies";
-import { UNSELECTED } from "../constants";
+import { UNSELECTED, USER_TYPE_MAP } from "../constants";
+import { getStoredUser } from "../store/local";
 
-const Packages = () => {
+
+function PackageList({ defaultAgency }) {
   const [search, setSearch] = useState("");
-  const [agency, setAgency] = useState(UNSELECTED);
+  const [agency, setAgency] = useState(defaultAgency);
   const [agencies, setAgencies] = useState([]);
   const [packages, setPackages] = useState([]);
   const [error, setError] = useState("");
+
   useEffect(() => {
     getPackages(agency, search)
       .then(({ data }) => setPackages(data))
       .catch(() => setError("No se pudieron cargar los paquetes."));
   }, [agency, search]);
+
   useEffect(() => {
     getAgencies().then(({ data }) => {
       setAgencies(data);
@@ -57,20 +61,22 @@ const Packages = () => {
             placeholder="Buscar paquete, hotel o agencia"
           />
         </label>
-        <label className="select-field">
-          <span>Agencia</span>
-          <select
-            value={agency || UNSELECTED}
-            onChange={(event) => setAgency(event.target.value)}
-          >
-            <option key={UNSELECTED}>Todas las agencias</option>
-            {agencies.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        {defaultAgency === UNSELECTED && (
+          <label className="select-field">
+            <span>Agencia</span>
+            <select
+              value={agency || UNSELECTED}
+              onChange={(event) => setAgency(event.target.value)}
+            >
+              <option key={UNSELECTED}>Todas las agencias</option>
+              {agencies.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </section>
       <section className="package-list" aria-live="polite">
         {error && <div className="alert alert-danger">{error}</div>}
@@ -125,6 +131,16 @@ const Packages = () => {
         )}
       </section>
     </Page>
+  );
+}
+const Packages = () => {
+  const user = getStoredUser();
+  return (
+    <PackageList
+      defaultAgency={
+        user.user_type == USER_TYPE_MAP.AGENCY ? user.agency : UNSELECTED
+      }
+    />
   );
 };
 
