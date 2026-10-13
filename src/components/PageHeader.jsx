@@ -14,14 +14,14 @@ function getLinks() {
       label: "Perfil",
       path: ROUTES.PROFILE,
     },
+    {
+      label: "Paquetes",
+      path: ROUTES.PACKAGES,
+    },
   ];
 
   if (user.user_type.toString() === USER_TYPE_MAP.END_USER) {
     return [
-      {
-        label: "Paquetes",
-        path: ROUTES.PACKAGES,
-      },
       {
         label: "Agencias",
         path: ROUTES.AGENCIES,
@@ -40,17 +40,12 @@ function getLinks() {
         label: "Agencias",
         path: ROUTES.ADMIN_AGENCIES,
       },
-      {
-        label: "Paquetes",
-        path: ROUTES.PACKAGES,
-      },
       ...commonLinks,
     ];
   }
   if (user.user_type.toString() === USER_TYPE_MAP.AGENCY) {
     return [
-      { label: "Paquetes", path: ROUTES.PACKAGES },
-      { label: "Crear paquete", path: "/packages/new" },
+      { label: "Crear paquete", path: ROUTES.PACKAGES_NEW },
       ...commonLinks,
     ];
   }
