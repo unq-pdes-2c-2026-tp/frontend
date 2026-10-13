@@ -33,13 +33,9 @@ const App = () => {
                 */}
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.REGISTER} element={<Register />} />
-          <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
           <Route path={ROUTES.PACKAGES} element={<Packages />} />
-<<<<<<< HEAD
           <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
           <Route path={ROUTES.PACKAGES_DETAIL()} element={<PackageDetail />} />
-=======
->>>>>>> 9c1fa5d (Agrego constante a ROUTES)
           <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
           <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />
