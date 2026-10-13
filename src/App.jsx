@@ -3,12 +3,13 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 // Se conservan para activar los guards cuando se implemente autenticación.
 //import PublicRoute from './routes/PublicRoute';
 //import PrivateRoute from './routes/PrivateRoute';
-import Packages from "./components/Packages";
+import Packages from "./components/packages/Packages";
+import PackageDetail from "./components/packages/PackageDetail";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import { Agencies } from "./components/admin/Agencies";
-import CreatePackage from "./components/CreatePackage";
+import CreatePackage from "./components/packages/CreatePackage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getStoredUser } from "./store/local";
 import { SnackbarProvider } from "notistack";
@@ -33,7 +34,8 @@ const App = () => {
           <Route path={ROUTES.LOGIN} element={<Login />} />
           <Route path={ROUTES.REGISTER} element={<Register />} />
           <Route path={ROUTES.PACKAGES} element={<Packages />} />
-          <Route path="/packages/new" element={<CreatePackage />} />
+          <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
+          <Route path={ROUTES.PACKAGES_DETAIL()} element={<PackageDetail />} />
           <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
           <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />

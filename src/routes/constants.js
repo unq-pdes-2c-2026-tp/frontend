@@ -4,6 +4,8 @@ export const ROUTES = {
   ADMIN_HOME: "/admin-home",
   LOGIN: "/login",
   PACKAGES: "/packages",
+  PACKAGES_NEW: "/packages/new",
+  PACKAGES_DETAIL: (id = ":id") => `/packages/${id}`,
   PROFILE: "/profile",
   REGISTER: "/register",
 };
