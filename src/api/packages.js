@@ -9,7 +9,8 @@ export const getPackages = (agency, search) => {
   }
   return apiAuthenticatedClient.get("/packages/", { params });
 };
-export const getPackageById = (id) => apiAuthenticatedClient.get(`/packages/${id}/`);
+export const getPackageById = (id) =>
+  apiAuthenticatedClient.get(`/packages/${id}/`);
 export const deletePackage = (id) =>
   apiAuthenticatedClient.delete(`/packages/${id}/`);
 export const getHotels = () => apiClient.get("/hotels/");

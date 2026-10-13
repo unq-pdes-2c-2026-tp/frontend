@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import "../../styles/packages.css";
 import { Page } from "../Page";
@@ -6,11 +6,6 @@ import { asMoney } from "../../format-utils/money";
 import { formatFlightDate } from "../../format-utils/dates";
 import { getPackages } from "../../api/packages";
 import { ROUTES } from "../../routes/constants";
-import { useEffect, useState } from "react";
-import "../../styles/packages.css";
-import { Page } from "../Page";
-import { asMoney } from "../../format-utils/money";
-import { getPackages } from "../../api/packages";
 import { getAgencies } from "../../api/agencies";
 import { UNSELECTED, USER_TYPE_MAP } from "../../constants";
 import { getStoredUser } from "../../store/local";
@@ -19,9 +14,10 @@ import { IconButton } from "../IconButton";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useModal } from "../../hooks/useModal";
 
-
 function Package({ item, reloadPackages }) {
+  const navigate = useNavigate();
   const [handleDeleteClose, handleDeleteShow, showDeleteModal] = useModal();
+
   const user = getStoredUser();
   const hasDeletePermission = [
     USER_TYPE_MAP.ADMIN,
@@ -99,8 +95,6 @@ function PackageList({ defaultAgency }) {
       setAgencies(data);
     });
   }, []);
-
-  const navigate = useNavigate();
 
   return (
     <Page>
