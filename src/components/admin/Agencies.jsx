@@ -89,10 +89,7 @@ export function Agencies() {
 
   const reloadAgencies = () => setUpdateAgencies((prev) => !prev);
   useEffect(() => {
-    getDetailedAgencies().then((response) => {
-      console.log(response.data);
-      setAgencies(response.data);
-    });
+    getDetailedAgencies().then((response) => setAgencies(response.data));
   }, [updateAgencies]);
 
   return (

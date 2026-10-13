@@ -1,7 +1,16 @@
+import { UNSELECTED } from "../constants";
 import { apiAuthenticatedClient, apiClient } from "./ApiRequests";
 
-export const getPackages = () => apiClient.get("/packages/");
-export const getPackageById = (id) => apiClient.get(`/packages/${id}/`);
+export const getPackages = (agency, search) => {
+  const params = agency !== UNSELECTED ? { agency_id: agency } : {};
+
+  if (search) {
+    params["search"] = search;
+  }
+  return apiAuthenticatedClient.get("/packages/", { params });
+};
+export const getPackageById = (id) =>
+  apiAuthenticatedClient.get(`/packages/${id}/`);
 export const deletePackage = (id) =>
   apiAuthenticatedClient.delete(`/packages/${id}/`);
 export const getHotels = () => apiClient.get("/hotels/");

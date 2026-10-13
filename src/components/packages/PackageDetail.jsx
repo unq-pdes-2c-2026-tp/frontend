@@ -38,9 +38,10 @@ const PackageDetail = () => {
 
   const isEndUser = currentUserType === USER_TYPE_MAP.END_USER;
   const isAgency = currentUserType === USER_TYPE_MAP.AGENCY;
+  const isAdmin = currentUserType === USER_TYPE_MAP.ADMIN;
 
   const isPackageOwnerAgency =
-    isAgency && user?.agency === packageDetail?.agency;
+    isAdmin || (isAgency && user?.agency === packageDetail?.agency);
 
   useEffect(() => {
     getPackageById(id)
