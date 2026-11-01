@@ -17,6 +17,7 @@ import { createPackage, getFlights, getHotels } from "../../api/packages";
 import { getStoredUser } from "../../store/local";
 import { USER_TYPE_MAP } from "../../constants";
 import "../../styles/create-package.css";
+import { AgencySelect } from "../AgencySelect";
 
 const initialForm = {
   name: "",
@@ -42,9 +43,14 @@ export default function CreatePackage() {
   const [loadingFlights, setLoadingFlights] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const user = getStoredUser() || {};
+  const [agencies, setAgencies] = useState([]);
 
   useEffect(() => {
-    if (String(user.user_type) !== USER_TYPE_MAP.AGENCY) {
+    if (
+      ![USER_TYPE_MAP.AGENCY, USER_TYPE_MAP.ADMIN].includes(
+        user.user_type.toString(),
+      )
+    ) {
       navigate("/packages", { replace: true });
       return;
     }
@@ -130,6 +136,7 @@ export default function CreatePackage() {
         outbound_flight_date: `${outbound.fecha}T${outbound.hora}Z`,
         return_flight_id: returning.id,
         return_flight_date: `${returning.fecha}T${returning.hora}Z`,
+        agency: form.agency || undefined,
       });
       enqueueSnackbar("Paquete creado correctamente", { variant: "success" });
       navigate("/packages");
@@ -165,6 +172,16 @@ export default function CreatePackage() {
           <Row className="g-4">
             <Col lg={8}>
               <Row className="g-3">
+                {user.user_type.toString() === USER_TYPE_MAP.ADMIN && (
+                  <Col xs={12}>
+                    <AgencySelect
+                      agencies={agencies}
+                      setAgencies={setAgencies}
+                      handleInputChange={update}
+                      value={form.agency}
+                    />
+                  </Col>
+                )}
                 <Col xs={12}>
                   <Form.Group controlId="name">
                     <Form.Label>Nombre</Form.Label>

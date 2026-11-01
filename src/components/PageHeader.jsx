@@ -40,6 +40,7 @@ function getLinks() {
         label: "Agencias",
         path: ROUTES.ADMIN_AGENCIES,
       },
+      { label: "Crear paquete", path: ROUTES.PACKAGES_NEW },
       ...commonLinks,
     ];
   }
