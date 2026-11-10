@@ -16,6 +16,7 @@ import { SnackbarProvider } from "notistack";
 import { ROUTES } from "./routes/constants";
 import { AdminHome } from "./components/admin/home/AdminHome";
 import { getDefaultRouteByUserType } from "./routes/useNavigateByUserType";
+import UpdatePackage from "./components/packages/UpdatePackage";
 
 const App = () => {
   const user = getStoredUser();
@@ -36,6 +37,7 @@ const App = () => {
           <Route path={ROUTES.PACKAGES} element={<Packages />} />
           <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
           <Route path={ROUTES.PACKAGES_DETAIL()} element={<PackageDetail />} />
+          <Route path={ROUTES.UPDATE_PACKAGE()} element={<UpdatePackage />} />
           <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
           <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />

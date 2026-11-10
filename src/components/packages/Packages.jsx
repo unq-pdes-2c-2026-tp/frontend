@@ -11,7 +11,7 @@ import { UNSELECTED, USER_TYPE_MAP } from "../../constants";
 import { getStoredUser } from "../../store/local";
 import { PackageDeleteModal } from "./PackageDeleteModal";
 import { IconButton } from "../IconButton";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaRegTrashAlt } from "react-icons/fa";
 import { useModal } from "../../hooks/useModal";
 
 function Package({ item, reloadPackages }) {
@@ -23,6 +23,14 @@ function Package({ item, reloadPackages }) {
     USER_TYPE_MAP.ADMIN,
     USER_TYPE_MAP.AGENCY,
   ].includes(user.user_type.toString());
+  const hasUpdatePermission = [
+    USER_TYPE_MAP.ADMIN,
+    USER_TYPE_MAP.AGENCY,
+  ].includes(user.user_type.toString());
+
+  const navigateUpdatePackage = () => {
+    navigate(ROUTES.UPDATE_PACKAGE(item.id));
+  };
   return (
     <>
       <article className="package-row" key={item.id}>
@@ -60,6 +68,9 @@ function Package({ item, reloadPackages }) {
             <span aria-hidden="true">→</span>
           </button>
         </div>
+        {hasUpdatePermission && (
+          <IconButton onClick={navigateUpdatePackage} icon={<FaPencilAlt />} />
+        )}
         {hasDeletePermission && (
           <IconButton onClick={handleDeleteShow} icon={<FaRegTrashAlt />} />
         )}

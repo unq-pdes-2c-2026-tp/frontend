@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { USER_TYPE_MAP } from "../constants";
 import "../styles/Register.css";
-import { getAgencies } from "../api/agencies";
 import { registerUser } from "../api/auth";
+import { AgencySelect } from "./AgencySelect";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,12 +18,6 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    getAgencies().then((response) => {
-      setAgencies(response.data);
-    });
-  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -198,25 +192,12 @@ const Register = () => {
           </select>
 
           {data.user_type === USER_TYPE_MAP.AGENCY && (
-            <>
-              <label htmlFor="RegisterAgencySelect">
-                Selecciona una agencia
-              </label>
-              <select
-                id="RegisterAgency"
-                name="agency"
-                className="registerInput register-select"
-                value={data.agency || ""}
-                onChange={handleInputChange}
-              >
-                <option value="">Seleccioná una agencia</option>
-                {agencies.map((agency) => (
-                  <option key={agency.id} value={agency.id}>
-                    {agency.name}
-                  </option>
-                ))}
-              </select>
-            </>
+            <AgencySelect
+              agencies={agencies}
+              setAgencies={setAgencies}
+              handleInputChange={handleInputChange}
+              value={data.agency}
+            />
           )}
 
           <button
