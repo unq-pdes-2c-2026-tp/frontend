@@ -41,6 +41,9 @@ RUN npm run build
 # --------------
 FROM nginx:1.31.4 AS prod
 
+# Copiamos config de nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copiamos el build desde la etapa anterior a la carpeta estática de Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 
