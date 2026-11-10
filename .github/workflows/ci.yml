@@ -1,4 +1,4 @@
-name: ctv-frontend
+name: ctv-frontend-ci
 
 on:
   push:

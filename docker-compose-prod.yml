@@ -1,0 +1,6 @@
+services:
+  prod:
+    image: ppissi/ctv-front:latest
+    restart: always
+    ports:
+      - "80:80"
