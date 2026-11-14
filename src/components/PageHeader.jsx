@@ -26,6 +26,10 @@ function getLinks() {
         label: "Agencias",
         path: ROUTES.AGENCIES,
       },
+      {
+        label: "Favoritos",
+        path: ROUTES.FAVORITES,
+      },
       ...commonLinks,
     ];
   }

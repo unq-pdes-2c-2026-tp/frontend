@@ -18,6 +18,7 @@ import { USER_TYPE_MAP } from "../../constants";
 import { ROUTES } from "../../routes/constants";
 import { getStoredUser } from "../../store/local";
 import { useModal } from "../../hooks/useModal";
+import { useFavorites } from "../../hooks/useFavorites";
 import { PackageDeleteModal } from "./PackageDeleteModal";
 import { PackagePurchaseModal } from "./PackagePurchaseModal";
 
@@ -33,6 +34,9 @@ const PackageDetail = () => {
   const [handlePurchaseClose, handlePurchaseShow, showPurchaseModal] =
     useModal();
 
+  const { getFavoriteByPackageId, toggleFavorite, actionLoading } =
+    useFavorites();
+
   const user = getStoredUser();
   const currentUserType = user?.user_type?.toString();
 
@@ -42,6 +46,8 @@ const PackageDetail = () => {
 
   const isPackageOwnerAgency =
     isAdmin || (isAgency && user?.agency === packageDetail?.agency);
+
+  const isFavorite = Boolean(getFavoriteByPackageId(id));
 
   useEffect(() => {
     getPackageById(id)
@@ -54,10 +60,6 @@ const PackageDetail = () => {
         setLoading(false);
       });
   }, [id]);
-
-  const handleFavorite = () => {
-    alert("Función de favoritos en desarrollo");
-  };
 
   const onConfirmPurchase = () => {
     navigate(ROUTES.PACKAGES); // Eventualmente reemplazar por ir a Mis compras o algo asi
@@ -189,10 +191,15 @@ const PackageDetail = () => {
                           Comprar paquete
                         </Button>
                         <Button
-                          variant="outline-secondary"
-                          onClick={handleFavorite}
+                          variant={isFavorite ? "danger" : "outline-secondary"}
+                          onClick={() => toggleFavorite(id)}
+                          disabled={actionLoading}
                         >
-                          ♥ Agregar a favoritos
+                          {actionLoading
+                            ? "Actualizando..."
+                            : isFavorite
+                              ? "♥ Quitar de favoritos"
+                              : "♥ Agregar a favoritos"}
                         </Button>
                       </>
                     )}

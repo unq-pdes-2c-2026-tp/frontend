@@ -21,3 +21,8 @@ export const updatePackage = (packageData) =>
   apiAuthenticatedClient.put(`/packages/${packageData.id}/`, packageData);
 export const purchasePackage = (packageId) =>
   apiAuthenticatedClient.post("/purchases/", { package: packageId });
+export const getFavorites = () => apiAuthenticatedClient.get("/favorites/");
+export const addFavorite = (packageId) =>
+  apiAuthenticatedClient.post("/favorites/", { package: packageId });
+export const removeFavorite = (favoriteId) =>
+  apiAuthenticatedClient.delete(`/favorites/${favoriteId}/`);
