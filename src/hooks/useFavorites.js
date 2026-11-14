@@ -27,10 +27,9 @@ export const useFavorites = ({ withPackageDetails = false } = {}) => {
 
     let ignore = false;
 
-    const fetchFavoritesData = async () => {
-      try {
-        const { data: favData } = await getFavorites();
-        if (ignore) return;
+    getFavorites()
+      .then(({ data: favData }) => {
+        if (ignore) return null;
 
         const favList = Array.isArray(favData)
           ? favData
@@ -39,42 +38,42 @@ export const useFavorites = ({ withPackageDetails = false } = {}) => {
         setFavorites(sortedFavList);
         setError("");
 
-        if (withPackageDetails) {
-          if (sortedFavList.length === 0) {
-            setFavoritePackages([]);
-          } else {
-            const { data: pkgData } = await getPackages(UNSELECTED);
-            if (ignore) return;
+        if (!withPackageDetails) return null;
 
-            const pkgList = Array.isArray(pkgData)
-              ? pkgData
-              : pkgData.results || [];
-
-            const packagesById = new Map(pkgList.map((pkg) => [pkg.id, pkg]));
-
-            const enriched = sortedFavList
-              .map((fav) => {
-                const pkg = packagesById.get(fav.package);
-                return pkg ? { ...pkg, favoriteId: fav.id } : null;
-              })
-              .filter(Boolean);
-
-            setFavoritePackages(enriched);
-          }
+        if (sortedFavList.length === 0) {
+          setFavoritePackages([]);
+          return null;
         }
-      } catch (err) {
+
+        return getPackages(UNSELECTED).then(({ data: pkgData }) => {
+          if (ignore) return;
+
+          const pkgList = Array.isArray(pkgData)
+            ? pkgData
+            : pkgData.results || [];
+          const packagesById = new Map(pkgList.map((pkg) => [pkg.id, pkg]));
+
+          const enriched = sortedFavList
+            .map((fav) => {
+              const pkg = packagesById.get(fav.package);
+              return pkg ? { ...pkg, favoriteId: fav.id } : null;
+            })
+            .filter(Boolean);
+
+          setFavoritePackages(enriched);
+        });
+      })
+      .catch((err) => {
         if (!ignore) {
           console.error("Error al cargar favoritos:", err);
           setError("No se pudieron cargar tus favoritos.");
         }
-      } finally {
+      })
+      .finally(() => {
         if (!ignore) {
           setLoading(false);
         }
-      }
-    };
-
-    fetchFavoritesData();
+      });
 
     return () => {
       ignore = true;
