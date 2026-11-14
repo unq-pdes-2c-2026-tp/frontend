@@ -51,7 +51,7 @@ const Package = ({ item, reloadPackages }) => {
       />
       {showDeleteModal && (
         <PackageDeleteModal
-          item={item}
+          packageItem={item}
           handleClose={handleDeleteClose}
           show={showDeleteModal}
           onOk={reloadPackages}
