@@ -6,6 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import Packages from "./components/packages/Packages";
 import PackageDetail from "./components/packages/PackageDetail";
 import Favorites from "./components/packages/Favorites";
+import Purchases from "./components/packages/Purchases";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
@@ -43,6 +44,7 @@ const App = () => {
           <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
           <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />
+          <Route path={ROUTES.PURCHASES} element={<Purchases />} />
           <Route
             path="/"
             element={
