@@ -8,6 +8,7 @@ export const ROUTES = {
   PACKAGES_NEW: "/packages/new",
   PACKAGES_DETAIL: (id = ":id") => `/packages/${id}`,
   UPDATE_PACKAGE: (id = ":id") => `/packages/${id}/update`,
+  PURCHASES: "/purchases",
   PROFILE: "/profile",
   REGISTER: "/register",
 };

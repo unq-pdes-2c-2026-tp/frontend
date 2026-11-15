@@ -62,7 +62,7 @@ const PackageDetail = () => {
   }, [id]);
 
   const onConfirmPurchase = () => {
-    navigate(ROUTES.PACKAGES); // Eventualmente reemplazar por ir a Mis compras o algo asi
+    navigate(ROUTES.PURCHASES);
   };
 
   const onConfirmDelete = () => {

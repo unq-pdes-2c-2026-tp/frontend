@@ -21,6 +21,7 @@ export const updatePackage = (packageData) =>
   apiAuthenticatedClient.put(`/packages/${packageData.id}/`, packageData);
 export const purchasePackage = (packageId) =>
   apiAuthenticatedClient.post("/purchases/", { package: packageId });
+export const getPurchases = () => apiAuthenticatedClient.get("/purchases/");
 export const getFavorites = () => apiAuthenticatedClient.get("/favorites/");
 export const addFavorite = (packageId) =>
   apiAuthenticatedClient.post("/favorites/", { package: packageId });

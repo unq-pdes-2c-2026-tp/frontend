@@ -20,37 +20,31 @@ function getLinks() {
     },
   ];
 
-  if (user.user_type.toString() === USER_TYPE_MAP.END_USER) {
+  const userType = user.user_type.toString();
+
+  if (userType === USER_TYPE_MAP.END_USER) {
     return [
-      {
-        label: "Agencias",
-        path: ROUTES.AGENCIES,
-      },
-      {
-        label: "Favoritos",
-        path: ROUTES.FAVORITES,
-      },
+      { label: "Agencias", path: ROUTES.AGENCIES },
+      { label: "Favoritos", path: ROUTES.FAVORITES },
+      { label: "Mis compras", path: ROUTES.PURCHASES },
       ...commonLinks,
     ];
   }
 
-  if (user.user_type.toString() === USER_TYPE_MAP.ADMIN) {
+  if (userType === USER_TYPE_MAP.ADMIN) {
     return [
-      {
-        label: "Inicio",
-        path: ROUTES.ADMIN_HOME,
-      },
-      {
-        label: "Agencias",
-        path: ROUTES.ADMIN_AGENCIES,
-      },
+      { label: "Inicio", path: ROUTES.ADMIN_HOME },
+      { label: "Agencias", path: ROUTES.ADMIN_AGENCIES },
       { label: "Crear paquete", path: ROUTES.PACKAGES_NEW },
+      { label: "Ventas", path: ROUTES.PURCHASES },
       ...commonLinks,
     ];
   }
-  if (user.user_type.toString() === USER_TYPE_MAP.AGENCY) {
+
+  if (userType === USER_TYPE_MAP.AGENCY) {
     return [
       { label: "Crear paquete", path: ROUTES.PACKAGES_NEW },
+      { label: "Mis ventas", path: ROUTES.PURCHASES },
       ...commonLinks,
     ];
   }
