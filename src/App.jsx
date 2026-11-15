@@ -1,8 +1,7 @@
 import "./styles/index.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-// Se conservan para activar los guards cuando se implemente autenticación.
-//import PublicRoute from './routes/PublicRoute';
-//import PrivateRoute from './routes/PrivateRoute';
+import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute";
 import Packages from "./components/packages/Packages";
 import PackageDetail from "./components/packages/PackageDetail";
 import Favorites from "./components/packages/Favorites";
@@ -19,49 +18,56 @@ import { ROUTES } from "./routes/constants";
 import { AdminHome } from "./components/admin/home/AdminHome";
 import { getDefaultRouteByUserType } from "./routes/useNavigateByUserType";
 import UpdatePackage from "./components/packages/UpdatePackage";
+import { USER_TYPE_MAP } from "./constants";
 
 const App = () => {
   const user = getStoredUser();
   const route = user ? getDefaultRouteByUserType(user.user_type) : null;
+
+  const { END_USER, AGENCY, ADMIN } = USER_TYPE_MAP;
+
   return (
     <SnackbarProvider autoHideDuration={5000}>
       <BrowserRouter>
         <Routes>
-          {/* Ejemplo de routing, los privados en caso de no estar autenticado te redirigen al login. */}
-          {/*
-                <Route element={<PublicRoute />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/packages" element={<Packages />} />
-                </Route>
-                */}
-          <Route path={ROUTES.LOGIN} element={<Login />} />
-          <Route path={ROUTES.REGISTER} element={<Register />} />
-          <Route path={ROUTES.PACKAGES} element={<Packages />} />
-          <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
-          <Route path={ROUTES.PACKAGES_DETAIL()} element={<PackageDetail />} />
-          <Route path={ROUTES.UPDATE_PACKAGE()} element={<UpdatePackage />} />
-          <Route path={ROUTES.FAVORITES} element={<Favorites />} />
-          <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
-          <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
-          <Route path={ROUTES.PROFILE} element={<Profile />} />
-          <Route path={ROUTES.PURCHASES} element={<Purchases />} />
+          <Route element={<PublicRoute />}>
+            <Route path={ROUTES.LOGIN} element={<Login />} />
+            <Route path={ROUTES.REGISTER} element={<Register />} />
+          </Route>
+
+          <Route
+            element={<PrivateRoute allowedRoles={[END_USER, AGENCY, ADMIN]} />}
+          >
+            <Route path={ROUTES.PACKAGES} element={<Packages />} />
+            <Route
+              path={ROUTES.PACKAGES_DETAIL()}
+              element={<PackageDetail />}
+            />
+            <Route path={ROUTES.PROFILE} element={<Profile />} />
+            <Route path={ROUTES.PURCHASES} element={<Purchases />} />
+          </Route>
+
+          <Route element={<PrivateRoute allowedRoles={[END_USER]} />}>
+            <Route path={ROUTES.FAVORITES} element={<Favorites />} />
+          </Route>
+
+          <Route element={<PrivateRoute allowedRoles={[AGENCY, ADMIN]} />}>
+            <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
+            <Route path={ROUTES.UPDATE_PACKAGE()} element={<UpdatePackage />} />
+          </Route>
+
+          <Route element={<PrivateRoute allowedRoles={[ADMIN]} />}>
+            <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
+            <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
+          </Route>
+
           <Route
             path="/"
             element={
-              user ? (
-                route && <Navigate to={route} />
+              user && route ? (
+                <Navigate to={route} replace />
               ) : (
-                <Navigate to={ROUTES.LOGIN} />
-              )
-            }
-          />
-          <Route
-            path="/"
-            element={
-              user ? (
-                <Navigate to={ROUTES.PACKAGES} />
-              ) : (
-                <Navigate to={ROUTES.LOGIN} />
+                <Navigate to={ROUTES.LOGIN} replace />
               )
             }
           />
