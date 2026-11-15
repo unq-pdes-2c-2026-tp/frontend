@@ -110,7 +110,7 @@ const Purchases = () => {
       }
     };
 
-    fetchPurchasesData();
+    void fetchPurchasesData();
 
     return () => {
       isMounted = false;
