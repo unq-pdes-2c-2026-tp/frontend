@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 //import PrivateRoute from './routes/PrivateRoute';
 import Packages from "./components/packages/Packages";
 import PackageDetail from "./components/packages/PackageDetail";
+import Favorites from "./components/packages/Favorites";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
@@ -38,6 +39,7 @@ const App = () => {
           <Route path={ROUTES.PACKAGES_NEW} element={<CreatePackage />} />
           <Route path={ROUTES.PACKAGES_DETAIL()} element={<PackageDetail />} />
           <Route path={ROUTES.UPDATE_PACKAGE()} element={<UpdatePackage />} />
+          <Route path={ROUTES.FAVORITES} element={<Favorites />} />
           <Route path={ROUTES.ADMIN_AGENCIES} element={<Agencies />} />
           <Route path={ROUTES.ADMIN_HOME} element={<AdminHome />} />
           <Route path={ROUTES.PROFILE} element={<Profile />} />

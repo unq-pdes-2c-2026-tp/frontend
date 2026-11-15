@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import "../../styles/packages.css";
 import { Page } from "../Page";
-import { asMoney } from "../../format-utils/money";
-import { formatFlightDate } from "../../format-utils/dates";
 import { getPackages } from "../../api/packages";
 import { ROUTES } from "../../routes/constants";
 import { getAgencies } from "../../api/agencies";
@@ -13,8 +11,9 @@ import { PackageDeleteModal } from "./PackageDeleteModal";
 import { IconButton } from "../IconButton";
 import { FaPencilAlt, FaRegTrashAlt } from "react-icons/fa";
 import { useModal } from "../../hooks/useModal";
+import { PackageRow } from "./PackageRow";
 
-function Package({ item, reloadPackages }) {
+const Package = ({ item, reloadPackages }) => {
   const navigate = useNavigate();
   const [handleDeleteClose, handleDeleteShow, showDeleteModal] = useModal();
 
@@ -31,53 +30,28 @@ function Package({ item, reloadPackages }) {
   const navigateUpdatePackage = () => {
     navigate(ROUTES.UPDATE_PACKAGE(item.id));
   };
+
   return (
     <>
-      <article className="package-row" key={item.id}>
-        <div className="package-image coral">
-          {item.hotel_photo ? (
-            <img src={item.hotel_photo} alt={item.hotel_name} />
-          ) : (
-            <span>{item.hotel_name}</span>
-          )}
-        </div>
-        <div className="package-info">
-          <div className="package-title-line">
-            <h2>{item.name}</h2>
-          </div>
-          <p className="agency">
-            <span className="agency-dot">{item.agency_name?.charAt(0)}</span>
-            {item.agency_name}
-          </p>
-          <p className="package-description">{item.description}</p>
-          <div className="package-meta">
-            <span>Hotel: {item.hotel_name}</span>
-            <span>Ida: {formatFlightDate(item.outbound_flight_date)}</span>
-            <span>Vuelta: {formatFlightDate(item.return_flight_date)}</span>
-          </div>
-        </div>
-
-        <div className="package-price">
-          <span>Precio</span>
-          <strong>{asMoney(item.price)}</strong>
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.PACKAGES_DETAIL(item.id))}
-          >
-            Ver paquete
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
-        {hasUpdatePermission && (
-          <IconButton onClick={navigateUpdatePackage} icon={<FaPencilAlt />} />
-        )}
-        {hasDeletePermission && (
-          <IconButton onClick={handleDeleteShow} icon={<FaRegTrashAlt />} />
-        )}
-      </article>
+      <PackageRow
+        item={item}
+        actions={
+          <>
+            {hasUpdatePermission && (
+              <IconButton
+                onClick={navigateUpdatePackage}
+                icon={<FaPencilAlt />}
+              />
+            )}
+            {hasDeletePermission && (
+              <IconButton onClick={handleDeleteShow} icon={<FaRegTrashAlt />} />
+            )}
+          </>
+        }
+      />
       {showDeleteModal && (
         <PackageDeleteModal
-          item={item}
+          packageItem={item}
           handleClose={handleDeleteClose}
           show={showDeleteModal}
           onOk={reloadPackages}
@@ -85,9 +59,9 @@ function Package({ item, reloadPackages }) {
       )}
     </>
   );
-}
+};
 
-function PackageList({ defaultAgency }) {
+const PackageList = ({ defaultAgency }) => {
   const [search, setSearch] = useState("");
   const [agency, setAgency] = useState(defaultAgency);
   const [agencies, setAgencies] = useState([]);
@@ -95,6 +69,7 @@ function PackageList({ defaultAgency }) {
   const [packagesLoad, setPackagesLoad] = useState(false);
   const [error, setError] = useState("");
   const reloadPackages = () => setPackagesLoad((prev) => !prev);
+
   useEffect(() => {
     getPackages(agency, search)
       .then(({ data }) => setPackages(data))
@@ -155,7 +130,7 @@ function PackageList({ defaultAgency }) {
           <span>Ordenado por más recientes</span>
         </div>
         {packages.map((item) => (
-          <Package item={item} reloadPackages={reloadPackages} />
+          <Package key={item.id} item={item} reloadPackages={reloadPackages} />
         ))}
         {packages.length === 0 && (
           <div className="empty-state">
@@ -166,7 +141,8 @@ function PackageList({ defaultAgency }) {
       </section>
     </Page>
   );
-}
+};
+
 const Packages = () => {
   const user = getStoredUser();
   return (
