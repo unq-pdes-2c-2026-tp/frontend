@@ -293,7 +293,10 @@ const PackageDetail = () => {
               <h4 className="fw-bold mb-0">
                 Reseñas del paquete ({reviews.length})
               </h4>
-              {calculatedAvgScore && <Stars amount={calculatedAvgScore} />}
+              {calculatedAvgScore !== null &&
+                calculatedAvgScore !== undefined && (
+                  <Stars amount={calculatedAvgScore} />
+                )}
             </div>
 
             {reviews.length === 0 ? (

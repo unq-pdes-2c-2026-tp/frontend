@@ -95,6 +95,7 @@ export const PackageReviewModal = ({
               onMouseLeave={() => setHoveredScore(null)}
               role="radiogroup"
               aria-label="Puntaje del paquete"
+              tabIndex={0}
             >
               {Array.from({ length: 10 }, (_, index) => {
                 const starValue = index + 1;
