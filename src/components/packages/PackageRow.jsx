@@ -2,9 +2,13 @@ import { useNavigate } from "react-router";
 import { asMoney } from "../../format-utils/money";
 import { formatFlightDate } from "../../format-utils/dates";
 import { ROUTES } from "../../routes/constants";
+import { GrayStar, Stars } from "../Stars";
 
 export const PackageRow = ({ item, actions }) => {
   const navigate = useNavigate();
+
+  const reviewsCount = item.reviews_count ?? item.reviews?.length ?? 0;
+  const avgScore = item.avg_score;
 
   return (
     <article className="package-row">
@@ -17,8 +21,18 @@ export const PackageRow = ({ item, actions }) => {
       </div>
 
       <div className="package-info">
-        <div className="package-title-line">
+        <div className="package-title-line d-flex align-items-center justify-content-between gap-2">
           <h2>{item.name}</h2>
+          <div className="d-flex align-items-center gap-1">
+            {avgScore !== null && avgScore !== undefined ? (
+              <Stars amount={Number(avgScore)} />
+            ) : (
+              <GrayStar />
+            )}
+            {reviewsCount > 0 && (
+              <small className="text-muted">({reviewsCount})</small>
+            )}
+          </div>
         </div>
         <p className="agency">
           <span className="agency-dot">{item.agency_name?.charAt(0)}</span>

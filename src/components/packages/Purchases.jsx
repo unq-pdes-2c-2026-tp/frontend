@@ -4,12 +4,15 @@ import { Alert, Badge, Button, Spinner } from "react-bootstrap";
 import "../../styles/packages.css";
 import { Page } from "../Page";
 import { PackageRow } from "./PackageRow";
+import { PackageReviewModal } from "./PackageReviewModal";
 import { getPackages, getPurchases } from "../../api/packages";
 import { getStoredUser } from "../../store/local";
 import { UNSELECTED, USER_TYPE_MAP } from "../../constants";
 import { ROUTES } from "../../routes/constants";
 import { asMoney } from "../../format-utils/money";
 import { formatFlightDate } from "../../format-utils/dates";
+import { useModal } from "../../hooks/useModal";
+import { Stars } from "../Stars";
 
 const ROLE_UI_CONFIG = {
   [USER_TYPE_MAP.END_USER]: {
@@ -51,12 +54,23 @@ const Purchases = () => {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadFlag, setReloadFlag] = useState(false);
+  const [selectedPurchase, setSelectedPurchase] = useState(null);
+
+  const [handleReviewClose, handleReviewShow, showReviewModal] = useModal();
 
   const user = getStoredUser();
   const userType = user?.user_type?.toString() || USER_TYPE_MAP.END_USER;
   const isEndUser = userType === USER_TYPE_MAP.END_USER;
   const uiConfig =
     ROLE_UI_CONFIG[userType] || ROLE_UI_CONFIG[USER_TYPE_MAP.END_USER];
+
+  const reloadPurchases = () => setReloadFlag((prev) => !prev);
+
+  const openReviewModal = (purchaseItem) => {
+    setSelectedPurchase(purchaseItem);
+    handleReviewShow();
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -92,6 +106,7 @@ const Purchases = () => {
               purchaseDatetime: purchase.datetime,
               buyerId: purchase.user,
               buyerDetail: purchase.user_detail || null,
+              reviews: purchase.reviews || [],
             };
           })
           .filter(Boolean);
@@ -115,7 +130,7 @@ const Purchases = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [reloadFlag]);
 
   return (
     <Page>
@@ -148,31 +163,61 @@ const Purchases = () => {
               <span>Ordenado por operaciones recientes</span>
             </div>
 
-            {purchases.map((item) => (
-              <PackageRow
-                key={item.purchaseId}
-                item={item}
-                actions={
-                  <div className="d-flex flex-column align-items-end justify-content-center gap-1 ps-2 border-start">
-                    <Badge bg="success">Operación #{item.purchaseId}</Badge>
-                    <small className="text-muted text-nowrap">
-                      {formatFlightDate(item.purchaseDatetime)}
-                    </small>
-                    {!isEndUser && (
-                      <Badge bg="light" text="dark" className="border">
-                        Cliente:{" "}
-                        {item.buyerDetail?.name ||
-                          item.buyerDetail?.email ||
-                          `Usuario #${item.buyerId}`}
-                      </Badge>
-                    )}
-                    <small className="fw-semibold text-dark">
-                      Abonado: {asMoney(item.price)}
-                    </small>
-                  </div>
-                }
-              />
-            ))}
+            {purchases.map((item) => {
+              const userReview = item.reviews?.[0] || null;
+
+              return (
+                <PackageRow
+                  key={item.purchaseId}
+                  item={item}
+                  actions={
+                    <div className="d-flex flex-column align-items-end justify-content-center gap-1 ps-2 border-start">
+                      <Badge bg="success">Operación #{item.purchaseId}</Badge>
+                      <small className="text-muted text-nowrap">
+                        {formatFlightDate(item.purchaseDatetime)}
+                      </small>
+                      {!isEndUser && (
+                        <Badge bg="light" text="dark" className="border">
+                          Cliente:{" "}
+                          {item.buyerDetail?.name ||
+                            item.buyerDetail?.email ||
+                            `Usuario #${item.buyerId}`}
+                        </Badge>
+                      )}
+                      <small className="fw-semibold text-dark">
+                        Abonado: {asMoney(item.price)}
+                      </small>
+
+                      {userReview && (
+                        <div className="text-end mt-1">
+                          <Stars amount={userReview.score} />
+                          <small
+                            className="d-block text-muted text-truncate"
+                            style={{ maxWidth: "180px" }}
+                            title={userReview.review}
+                          >
+                            "{userReview.review}"
+                          </small>
+                        </div>
+                      )}
+
+                      {isEndUser && (
+                        <Button
+                          variant={
+                            userReview ? "outline-secondary" : "outline-primary"
+                          }
+                          size="sm"
+                          className="mt-1"
+                          onClick={() => openReviewModal(item)}
+                        >
+                          {userReview ? "Editar reseña" : "Dejar reseña"}
+                        </Button>
+                      )}
+                    </div>
+                  }
+                />
+              );
+            })}
 
             {purchases.length === 0 && !error && (
               <div className="empty-state">
@@ -192,6 +237,17 @@ const Purchases = () => {
           </>
         )}
       </section>
+
+      {showReviewModal && selectedPurchase && (
+        <PackageReviewModal
+          show={showReviewModal}
+          handleClose={handleReviewClose}
+          purchaseId={selectedPurchase.purchaseId}
+          packageName={selectedPurchase.name}
+          existingReview={selectedPurchase.reviews?.[0] || null}
+          onOk={reloadPurchases}
+        />
+      )}
     </Page>
   );
 };
