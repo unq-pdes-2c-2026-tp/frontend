@@ -11,10 +11,6 @@ function getLinks() {
 
   const commonLinks = [
     {
-      label: "Perfil",
-      path: ROUTES.PROFILE,
-    },
-    {
       label: "Paquetes",
       path: ROUTES.PACKAGES,
     },
@@ -24,7 +20,6 @@ function getLinks() {
 
   if (userType === USER_TYPE_MAP.END_USER) {
     return [
-      { label: "Agencias", path: ROUTES.AGENCIES },
       { label: "Favoritos", path: ROUTES.FAVORITES },
       { label: "Mis compras", path: ROUTES.PURCHASES },
       ...commonLinks,
@@ -33,7 +28,7 @@ function getLinks() {
 
   if (userType === USER_TYPE_MAP.ADMIN) {
     return [
-      { label: "Inicio", path: ROUTES.ADMIN_HOME },
+      { label: "Dashboard", path: ROUTES.ADMIN_HOME },
       { label: "Agencias", path: ROUTES.ADMIN_AGENCIES },
       { label: "Crear paquete", path: ROUTES.PACKAGES_NEW },
       { label: "Ventas", path: ROUTES.PURCHASES },
