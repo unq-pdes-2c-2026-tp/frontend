@@ -27,3 +27,9 @@ export const addFavorite = (packageId) =>
   apiAuthenticatedClient.post("/favorites/", { package: packageId });
 export const removeFavorite = (favoriteId) =>
   apiAuthenticatedClient.delete(`/favorites/${favoriteId}/`);
+export const getReviews = (params = {}) =>
+  apiAuthenticatedClient.get("/reviews/", { params });
+export const createReview = (reviewData) =>
+  apiAuthenticatedClient.post("/reviews/", reviewData);
+export const updateReview = (reviewId, reviewData) =>
+  apiAuthenticatedClient.patch(`/reviews/${reviewId}/`, reviewData);
