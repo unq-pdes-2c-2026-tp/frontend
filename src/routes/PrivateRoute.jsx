@@ -1,13 +1,22 @@
-import { Navigate, Route } from "react-router";
+import { Navigate, Outlet } from "react-router";
+import { getStoredUser } from "../store/local";
+import { ROUTES } from "./constants";
+import Forbidden from "../components/Forbidden";
 
-const PrivateRoute = ({ path, element }) => {
-  const isAuthenticated = !!localStorage.getItem("token");
+const PrivateRoute = ({ allowedRoles }) => {
+  const user = getStoredUser();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  if (!user) {
+    return <Navigate to={ROUTES.LOGIN} replace />;
   }
 
-  return <Route path={path} element={element} />;
+  const userType = user.user_type?.toString();
+
+  if (allowedRoles && !allowedRoles.includes(userType)) {
+    return <Forbidden />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;
